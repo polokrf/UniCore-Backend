@@ -108,9 +108,24 @@ const logOut = catchAsync(async (req:Request, res:Response, next:NextFunction) =
 })
 
 
+const myProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const userId = req.user?.userId
+  const profile = await authService.myProfile(userId as string)
+
+   response(res, {
+     status: 200,
+     success: true,
+     message: 'profile  retrieve successfully',
+     data:profile
+   });
+  
+})
+
+
 export const authController = {
   userRegister,
   registerEmailVerify,
   userLogin,
-  logOut
+  logOut,
+  myProfile
 }
