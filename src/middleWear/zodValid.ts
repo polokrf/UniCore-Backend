@@ -17,6 +17,7 @@ const zodValid = (payload:z.ZodObject) => {
       
     } catch (error:any) {
       console.log(error.message)
+      next(error)
     }
     
     

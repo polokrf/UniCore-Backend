@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import { globalError } from './middleWear/globalError';
@@ -9,15 +9,21 @@ const app = express()
 // middle wear 
 app.use(cors({
   
-    origin:'**',
+    origin:true,
     credentials: true,
   
 }))
 
 app.use(express.json(),);
 app.use(express.urlencoded({ extended: true }))
+
 app.use(cookieParser())
 
+app.get('/', (req:Request, res:Response) => {
+    res.json({
+        message:'server is run '
+    })
+})
 
 //  router 
 app.use('/api/auth',authRouter)

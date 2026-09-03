@@ -5,7 +5,7 @@ const catchAsync = (fu:RequestHandler) => {
     try {
       await fu(req,res,next)
     } catch (error) {
-      next()
+      next(error)
     }
   }
 }

@@ -1,13 +1,18 @@
 import express from 'express'
 import zodValid from '../../middleWear/zodValid';
 import { authController } from './auth.controller';
-
+import { loginPayload, registerPayload, verifyEmailPayload } from './auth.zodValid';
 const router = express.Router()
 
-router.post('/register', zodValid, authController.userRegister)
-router.post('/email-verify', zodValid, authController.registerEmailVerify)
-router.post('/login',zodValid,authController.userLogin)
 
+
+
+
+
+router.post('/register', zodValid(registerPayload), authController.userRegister)
+router.post('/email-verify', zodValid(verifyEmailPayload), authController.registerEmailVerify)
+router.post('/login',zodValid(loginPayload),authController.userLogin)
+router.post('/logout',authController.logOut)
 
 
 export const authRouter = router;
