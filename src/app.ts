@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { globalError } from './middleWear/globalError';
 import { notFound } from './middleWear/notFound';
 import { authRouter } from './modules/auth/auth.route';
+import { userRouter } from './modules/user/user.route';
 const app = express()
 
 // middle wear 
@@ -26,7 +27,8 @@ app.get('/', (req:Request, res:Response) => {
 })
 
 //  router 
-app.use('/api/auth',authRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/user',userRouter)
 
 
 // global error handler 
