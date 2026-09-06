@@ -5,6 +5,8 @@ import { globalError } from './middleWear/globalError';
 import { notFound } from './middleWear/notFound';
 import { authRouter } from './modules/auth/auth.route';
 import { userRouter } from './modules/user/user.route';
+import { departmentRouter } from './modules/department/department.route';
+
 const app = express()
 
 // middle wear 
@@ -28,7 +30,8 @@ app.get('/', (req:Request, res:Response) => {
 
 //  router 
 app.use('/api/auth', authRouter)
-app.use('/api/user',userRouter)
+app.use('/api/user', userRouter)
+app.use('/api/department',departmentRouter)
 
 
 // global error handler 

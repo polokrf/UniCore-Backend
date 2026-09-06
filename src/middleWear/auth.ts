@@ -53,10 +53,6 @@ const auth = (...role: Role[]) => {
 
   
 
-    if (!user) {
-      throw new Error('forbidden access user not found')
-    }
-
     if (!user.isActive) {
       throw new Error('your account has blocked do not get access')
     }
