@@ -1,0 +1,19 @@
+model Course {
+  id           String   @id @default(uuid())
+  departmentId String
+
+  code         String   @unique
+  title        String
+  description  String?
+  credit       Float
+  isActive     Boolean  @default(true)
+
+  offerings CourseOffering[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  department Department @relation(fields: [departmentId], references: [id])
+
+  @@map("courses")
+}

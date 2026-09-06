@@ -23,7 +23,7 @@ router.post(
 router.get('', auth(), studentController.getStudentProfile);
 
 router.patch(
-  '/update-won-profile',
+'/update-won-profile',
   auth(Role.STUDENT),
   zodValid(updateProfile),
   studentController.updateStudentProfile

@@ -7,6 +7,9 @@ import { authRouter } from './modules/auth/auth.route';
 import { userRouter } from './modules/user/user.route';
 import { departmentRouter } from './modules/department/department.route';
 import { teacherRouter } from './modules/teacher/teacher.route';
+import { studentRouter } from './modules/student/student.route';
+import { CourseRouter } from './modules/course/course.route';
+import { semesterRouter } from './modules/semester/semester.route';
 
 const app = express()
 
@@ -33,7 +36,10 @@ app.get('/', (req:Request, res:Response) => {
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
 app.use('/api/department', departmentRouter)
-app.use('/api/teacher-profile',teacherRouter)
+app.use('/api/teacher-profile', teacherRouter)
+app.use('/api/student-profile', studentRouter)
+app.use('/api/course', CourseRouter)
+app.use('/api/semester',semesterRouter)
 
 
 // global error handler 
