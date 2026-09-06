@@ -6,3 +6,15 @@ enum Role {
   STUDENT
   USER
 }
+
+enum TeacherStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum StudentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

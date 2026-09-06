@@ -47,6 +47,16 @@ export { Prisma }
  */
 export type Department = Prisma.DepartmentModel
 /**
+ * Model StudentProfile
+ * 
+ */
+export type StudentProfile = Prisma.StudentProfileModel
+/**
+ * Model TeacherProfile
+ * 
+ */
+export type TeacherProfile = Prisma.TeacherProfileModel
+/**
  * Model User
  * 
  */

@@ -6,6 +6,7 @@ import { notFound } from './middleWear/notFound';
 import { authRouter } from './modules/auth/auth.route';
 import { userRouter } from './modules/user/user.route';
 import { departmentRouter } from './modules/department/department.route';
+import { teacherRouter } from './modules/teacher/teacher.route';
 
 const app = express()
 
@@ -31,7 +32,8 @@ app.get('/', (req:Request, res:Response) => {
 //  router 
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
-app.use('/api/department',departmentRouter)
+app.use('/api/department', departmentRouter)
+app.use('/api/teacher-profile',teacherRouter)
 
 
 // global error handler 

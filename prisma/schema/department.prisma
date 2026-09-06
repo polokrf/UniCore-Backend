@@ -6,6 +6,7 @@ model Department {
   isActive    Boolean  @default(true)
 
   teachers TeacherProfile[]
+  student  StudentProfile[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

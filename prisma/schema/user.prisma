@@ -10,6 +10,7 @@ model User {
   isEmailVerified Boolean @default(false)
 
   teacherProfile TeacherProfile?
+  studentProfile StudentProfile?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
