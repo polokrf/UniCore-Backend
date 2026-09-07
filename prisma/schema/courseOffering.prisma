@@ -2,7 +2,7 @@ model CourseOffering {
   id         String @id @default(uuid())
   courseId   String
   semesterId String
-  teacherId  String
+  teacherId  String?
 
   section  String
   capacity Int?
@@ -14,7 +14,7 @@ model CourseOffering {
 
   course   Course         @relation(fields: [courseId], references: [id])
   semester Semester       @relation(fields: [semesterId], references: [id])
-  teacher  TeacherProfile @relation(fields: [teacherId], references: [id])
+  teacher  TeacherProfile? @relation(fields: [teacherId], references: [id])
 
   @@unique([courseId, semesterId, section])
   @@map("course_offerings")

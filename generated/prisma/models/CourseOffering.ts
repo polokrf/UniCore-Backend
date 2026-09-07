@@ -207,7 +207,7 @@ export type CourseOfferingGroupByOutputType = {
   id: string
   courseId: string
   semesterId: string
-  teacherId: string
+  teacherId: string | null
   section: string
   capacity: number | null
   isActive: boolean
@@ -242,7 +242,7 @@ export type CourseOfferingWhereInput = {
   id?: Prisma.StringFilter<"CourseOffering"> | string
   courseId?: Prisma.StringFilter<"CourseOffering"> | string
   semesterId?: Prisma.StringFilter<"CourseOffering"> | string
-  teacherId?: Prisma.StringFilter<"CourseOffering"> | string
+  teacherId?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   section?: Prisma.StringFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableFilter<"CourseOffering"> | number | null
   isActive?: Prisma.BoolFilter<"CourseOffering"> | boolean
@@ -250,14 +250,14 @@ export type CourseOfferingWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   semester?: Prisma.XOR<Prisma.SemesterScalarRelationFilter, Prisma.SemesterWhereInput>
-  teacher?: Prisma.XOR<Prisma.TeacherProfileScalarRelationFilter, Prisma.TeacherProfileWhereInput>
+  teacher?: Prisma.XOR<Prisma.TeacherProfileNullableScalarRelationFilter, Prisma.TeacherProfileWhereInput> | null
 }
 
 export type CourseOfferingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
   semesterId?: Prisma.SortOrder
-  teacherId?: Prisma.SortOrder
+  teacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -276,7 +276,7 @@ export type CourseOfferingWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.CourseOfferingWhereInput | Prisma.CourseOfferingWhereInput[]
   courseId?: Prisma.StringFilter<"CourseOffering"> | string
   semesterId?: Prisma.StringFilter<"CourseOffering"> | string
-  teacherId?: Prisma.StringFilter<"CourseOffering"> | string
+  teacherId?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   section?: Prisma.StringFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableFilter<"CourseOffering"> | number | null
   isActive?: Prisma.BoolFilter<"CourseOffering"> | boolean
@@ -284,14 +284,14 @@ export type CourseOfferingWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   semester?: Prisma.XOR<Prisma.SemesterScalarRelationFilter, Prisma.SemesterWhereInput>
-  teacher?: Prisma.XOR<Prisma.TeacherProfileScalarRelationFilter, Prisma.TeacherProfileWhereInput>
+  teacher?: Prisma.XOR<Prisma.TeacherProfileNullableScalarRelationFilter, Prisma.TeacherProfileWhereInput> | null
 }, "id" | "courseId_semesterId_section">
 
 export type CourseOfferingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   courseId?: Prisma.SortOrder
   semesterId?: Prisma.SortOrder
-  teacherId?: Prisma.SortOrder
+  teacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
@@ -311,7 +311,7 @@ export type CourseOfferingScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
   courseId?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
   semesterId?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
-  teacherId?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
+  teacherId?: Prisma.StringNullableWithAggregatesFilter<"CourseOffering"> | string | null
   section?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableWithAggregatesFilter<"CourseOffering"> | number | null
   isActive?: Prisma.BoolWithAggregatesFilter<"CourseOffering"> | boolean
@@ -328,14 +328,14 @@ export type CourseOfferingCreateInput = {
   updatedAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutOfferingsInput
   semester: Prisma.SemesterCreateNestedOneWithoutOfferingsInput
-  teacher: Prisma.TeacherProfileCreateNestedOneWithoutCourseOfferingsInput
+  teacher?: Prisma.TeacherProfileCreateNestedOneWithoutCourseOfferingsInput
 }
 
 export type CourseOfferingUncheckedCreateInput = {
   id?: string
   courseId: string
   semesterId: string
-  teacherId: string
+  teacherId?: string | null
   section: string
   capacity?: number | null
   isActive?: boolean
@@ -352,14 +352,14 @@ export type CourseOfferingUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutOfferingsNestedInput
   semester?: Prisma.SemesterUpdateOneRequiredWithoutOfferingsNestedInput
-  teacher?: Prisma.TeacherProfileUpdateOneRequiredWithoutCourseOfferingsNestedInput
+  teacher?: Prisma.TeacherProfileUpdateOneWithoutCourseOfferingsNestedInput
 }
 
 export type CourseOfferingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   semesterId?: Prisma.StringFieldUpdateOperationsInput | string
-  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -371,7 +371,7 @@ export type CourseOfferingCreateManyInput = {
   id?: string
   courseId: string
   semesterId: string
-  teacherId: string
+  teacherId?: string | null
   section: string
   capacity?: number | null
   isActive?: boolean
@@ -392,7 +392,7 @@ export type CourseOfferingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   semesterId?: Prisma.StringFieldUpdateOperationsInput | string
-  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -602,13 +602,13 @@ export type CourseOfferingCreateWithoutCourseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   semester: Prisma.SemesterCreateNestedOneWithoutOfferingsInput
-  teacher: Prisma.TeacherProfileCreateNestedOneWithoutCourseOfferingsInput
+  teacher?: Prisma.TeacherProfileCreateNestedOneWithoutCourseOfferingsInput
 }
 
 export type CourseOfferingUncheckedCreateWithoutCourseInput = {
   id?: string
   semesterId: string
-  teacherId: string
+  teacherId?: string | null
   section: string
   capacity?: number | null
   isActive?: boolean
@@ -649,7 +649,7 @@ export type CourseOfferingScalarWhereInput = {
   id?: Prisma.StringFilter<"CourseOffering"> | string
   courseId?: Prisma.StringFilter<"CourseOffering"> | string
   semesterId?: Prisma.StringFilter<"CourseOffering"> | string
-  teacherId?: Prisma.StringFilter<"CourseOffering"> | string
+  teacherId?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   section?: Prisma.StringFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableFilter<"CourseOffering"> | number | null
   isActive?: Prisma.BoolFilter<"CourseOffering"> | boolean
@@ -665,13 +665,13 @@ export type CourseOfferingCreateWithoutSemesterInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutOfferingsInput
-  teacher: Prisma.TeacherProfileCreateNestedOneWithoutCourseOfferingsInput
+  teacher?: Prisma.TeacherProfileCreateNestedOneWithoutCourseOfferingsInput
 }
 
 export type CourseOfferingUncheckedCreateWithoutSemesterInput = {
   id?: string
   courseId: string
-  teacherId: string
+  teacherId?: string | null
   section: string
   capacity?: number | null
   isActive?: boolean
@@ -756,7 +756,7 @@ export type CourseOfferingUpdateManyWithWhereWithoutTeacherInput = {
 export type CourseOfferingCreateManyCourseInput = {
   id?: string
   semesterId: string
-  teacherId: string
+  teacherId?: string | null
   section: string
   capacity?: number | null
   isActive?: boolean
@@ -772,13 +772,13 @@ export type CourseOfferingUpdateWithoutCourseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   semester?: Prisma.SemesterUpdateOneRequiredWithoutOfferingsNestedInput
-  teacher?: Prisma.TeacherProfileUpdateOneRequiredWithoutCourseOfferingsNestedInput
+  teacher?: Prisma.TeacherProfileUpdateOneWithoutCourseOfferingsNestedInput
 }
 
 export type CourseOfferingUncheckedUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   semesterId?: Prisma.StringFieldUpdateOperationsInput | string
-  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -789,7 +789,7 @@ export type CourseOfferingUncheckedUpdateWithoutCourseInput = {
 export type CourseOfferingUncheckedUpdateManyWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   semesterId?: Prisma.StringFieldUpdateOperationsInput | string
-  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -800,7 +800,7 @@ export type CourseOfferingUncheckedUpdateManyWithoutCourseInput = {
 export type CourseOfferingCreateManySemesterInput = {
   id?: string
   courseId: string
-  teacherId: string
+  teacherId?: string | null
   section: string
   capacity?: number | null
   isActive?: boolean
@@ -816,13 +816,13 @@ export type CourseOfferingUpdateWithoutSemesterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutOfferingsNestedInput
-  teacher?: Prisma.TeacherProfileUpdateOneRequiredWithoutCourseOfferingsNestedInput
+  teacher?: Prisma.TeacherProfileUpdateOneWithoutCourseOfferingsNestedInput
 }
 
 export type CourseOfferingUncheckedUpdateWithoutSemesterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
-  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -833,7 +833,7 @@ export type CourseOfferingUncheckedUpdateWithoutSemesterInput = {
 export type CourseOfferingUncheckedUpdateManyWithoutSemesterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
-  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -899,7 +899,7 @@ export type CourseOfferingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   updatedAt?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   semester?: boolean | Prisma.SemesterDefaultArgs<ExtArgs>
-  teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.CourseOffering$teacherArgs<ExtArgs>
 }, ExtArgs["result"]["courseOffering"]>
 
 export type CourseOfferingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -914,7 +914,7 @@ export type CourseOfferingSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   updatedAt?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   semester?: boolean | Prisma.SemesterDefaultArgs<ExtArgs>
-  teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.CourseOffering$teacherArgs<ExtArgs>
 }, ExtArgs["result"]["courseOffering"]>
 
 export type CourseOfferingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -929,7 +929,7 @@ export type CourseOfferingSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   updatedAt?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   semester?: boolean | Prisma.SemesterDefaultArgs<ExtArgs>
-  teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.CourseOffering$teacherArgs<ExtArgs>
 }, ExtArgs["result"]["courseOffering"]>
 
 export type CourseOfferingSelectScalar = {
@@ -948,17 +948,17 @@ export type CourseOfferingOmit<ExtArgs extends runtime.Types.Extensions.Internal
 export type CourseOfferingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   semester?: boolean | Prisma.SemesterDefaultArgs<ExtArgs>
-  teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.CourseOffering$teacherArgs<ExtArgs>
 }
 export type CourseOfferingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   semester?: boolean | Prisma.SemesterDefaultArgs<ExtArgs>
-  teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.CourseOffering$teacherArgs<ExtArgs>
 }
 export type CourseOfferingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   semester?: boolean | Prisma.SemesterDefaultArgs<ExtArgs>
-  teacher?: boolean | Prisma.TeacherProfileDefaultArgs<ExtArgs>
+  teacher?: boolean | Prisma.CourseOffering$teacherArgs<ExtArgs>
 }
 
 export type $CourseOfferingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -966,13 +966,13 @@ export type $CourseOfferingPayload<ExtArgs extends runtime.Types.Extensions.Inte
   objects: {
     course: Prisma.$CoursePayload<ExtArgs>
     semester: Prisma.$SemesterPayload<ExtArgs>
-    teacher: Prisma.$TeacherProfilePayload<ExtArgs>
+    teacher: Prisma.$TeacherProfilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     courseId: string
     semesterId: string
-    teacherId: string
+    teacherId: string | null
     section: string
     capacity: number | null
     isActive: boolean
@@ -1374,7 +1374,7 @@ export interface Prisma__CourseOfferingClient<T, Null = never, ExtArgs extends r
   readonly [Symbol.toStringTag]: "PrismaPromise"
   course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   semester<T extends Prisma.SemesterDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SemesterDefaultArgs<ExtArgs>>): Prisma.Prisma__SemesterClient<runtime.Types.Result.GetResult<Prisma.$SemesterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  teacher<T extends Prisma.TeacherProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__TeacherProfileClient<runtime.Types.Result.GetResult<Prisma.$TeacherProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  teacher<T extends Prisma.CourseOffering$teacherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseOffering$teacherArgs<ExtArgs>>): Prisma.Prisma__TeacherProfileClient<runtime.Types.Result.GetResult<Prisma.$TeacherProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1811,6 +1811,25 @@ export type CourseOfferingDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many CourseOfferings to delete.
    */
   limit?: number
+}
+
+/**
+ * CourseOffering.teacher
+ */
+export type CourseOffering$teacherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeacherProfile
+   */
+  select?: Prisma.TeacherProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeacherProfile
+   */
+  omit?: Prisma.TeacherProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeacherProfileInclude<ExtArgs> | null
+  where?: Prisma.TeacherProfileWhereInput
 }
 
 /**

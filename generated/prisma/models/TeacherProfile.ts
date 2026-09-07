@@ -482,9 +482,9 @@ export type TeacherProfileUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type TeacherProfileScalarRelationFilter = {
-  is?: Prisma.TeacherProfileWhereInput
-  isNot?: Prisma.TeacherProfileWhereInput
+export type TeacherProfileNullableScalarRelationFilter = {
+  is?: Prisma.TeacherProfileWhereInput | null
+  isNot?: Prisma.TeacherProfileWhereInput | null
 }
 
 export type TeacherProfileListRelationFilter = {
@@ -551,21 +551,18 @@ export type TeacherProfileMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type TeacherProfileNullableScalarRelationFilter = {
-  is?: Prisma.TeacherProfileWhereInput | null
-  isNot?: Prisma.TeacherProfileWhereInput | null
-}
-
 export type TeacherProfileCreateNestedOneWithoutCourseOfferingsInput = {
   create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCourseOfferingsInput, Prisma.TeacherProfileUncheckedCreateWithoutCourseOfferingsInput>
   connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutCourseOfferingsInput
   connect?: Prisma.TeacherProfileWhereUniqueInput
 }
 
-export type TeacherProfileUpdateOneRequiredWithoutCourseOfferingsNestedInput = {
+export type TeacherProfileUpdateOneWithoutCourseOfferingsNestedInput = {
   create?: Prisma.XOR<Prisma.TeacherProfileCreateWithoutCourseOfferingsInput, Prisma.TeacherProfileUncheckedCreateWithoutCourseOfferingsInput>
   connectOrCreate?: Prisma.TeacherProfileCreateOrConnectWithoutCourseOfferingsInput
   upsert?: Prisma.TeacherProfileUpsertWithoutCourseOfferingsInput
+  disconnect?: Prisma.TeacherProfileWhereInput | boolean
+  delete?: Prisma.TeacherProfileWhereInput | boolean
   connect?: Prisma.TeacherProfileWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherProfileUpdateToOneWithWhereWithoutCourseOfferingsInput, Prisma.TeacherProfileUpdateWithoutCourseOfferingsInput>, Prisma.TeacherProfileUncheckedUpdateWithoutCourseOfferingsInput>
 }
