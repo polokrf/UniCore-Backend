@@ -10,6 +10,8 @@ import { teacherRouter } from './modules/teacher/teacher.route';
 import { studentRouter } from './modules/student/student.route';
 import { CourseRouter } from './modules/course/course.route';
 import { semesterRouter } from './modules/semester/semester.route';
+import { courseOfferingRouter } from './modules/courseOffering/courseOffering.route';
+import { enrollmentRouter } from './modules/enrollment/enrollment.route';
 
 const app = express()
 
@@ -39,7 +41,9 @@ app.use('/api/department', departmentRouter)
 app.use('/api/teacher-profile', teacherRouter)
 app.use('/api/student-profile', studentRouter)
 app.use('/api/course', CourseRouter)
-app.use('/api/semester',semesterRouter)
+app.use('/api/semester', semesterRouter)
+app.use('/api/course-offering', courseOfferingRouter)
+app.use('/api/enrolment',enrollmentRouter)
 
 
 // global error handler 

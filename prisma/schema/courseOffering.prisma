@@ -9,6 +9,8 @@ model CourseOffering {
 
   isActive Boolean @default(true)
 
+  enrollments Enrollment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

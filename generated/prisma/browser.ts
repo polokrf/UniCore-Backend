@@ -33,6 +33,11 @@ export type CourseOffering = Prisma.CourseOfferingModel
  */
 export type Department = Prisma.DepartmentModel
 /**
+ * Model Enrollment
+ * 
+ */
+export type Enrollment = Prisma.EnrollmentModel
+/**
  * Model Semester
  * 
  */

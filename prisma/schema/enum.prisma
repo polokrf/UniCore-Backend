@@ -18,3 +18,9 @@ enum StudentStatus {
   APPROVED
   REJECTED
 }
+
+enum EnrollmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}

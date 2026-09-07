@@ -37,3 +37,12 @@ export const StudentStatus = {
 } as const
 
 export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus]
+
+
+export const EnrollmentStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type EnrollmentStatus = (typeof EnrollmentStatus)[keyof typeof EnrollmentStatus]
