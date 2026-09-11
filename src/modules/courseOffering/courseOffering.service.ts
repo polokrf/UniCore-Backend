@@ -3,7 +3,7 @@ import { IAssignTeacher, ICourseOffering, IUpdateOffer } from './courseOffering.
 
 
 const createCourseOffering= async (payload:ICourseOffering) => {
-  const { courseId,semesterId,capacity,section } = payload;
+  const { courseId,semesterId,capacity,section,fee } = payload;
 
   const isExitCourseOffering = await prisma.courseOffering.findUnique({
     where: {
@@ -47,7 +47,8 @@ const createCourseOffering= async (payload:ICourseOffering) => {
       semesterId,
       
       section,
-      capacity
+      capacity,
+      fee
 
     },
   });

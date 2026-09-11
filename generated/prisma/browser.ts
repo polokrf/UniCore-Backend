@@ -38,6 +38,11 @@ export type Department = Prisma.DepartmentModel
  */
 export type Enrollment = Prisma.EnrollmentModel
 /**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
  * Model Semester
  * 
  */

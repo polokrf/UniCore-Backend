@@ -19,7 +19,7 @@ const createCourse = async (payload:ICourse) => {
 
   if (isExitCourse) {
     throw new Error(
-      'this department already created',
+      'this course already created',
     );
   }
 

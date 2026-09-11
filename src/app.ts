@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import { globalError } from './middleWear/globalError';
@@ -12,6 +12,9 @@ import { CourseRouter } from './modules/course/course.route';
 import { semesterRouter } from './modules/semester/semester.route';
 import { courseOfferingRouter } from './modules/courseOffering/courseOffering.route';
 import { enrollmentRouter } from './modules/enrollment/enrollment.route';
+import response from './utils/clientResponse';
+import { getGrantToken } from './lib/bkash';
+import { paymentRouter } from './modules/payment/payment.route';
 
 const app = express()
 
@@ -34,6 +37,22 @@ app.get('/', (req:Request, res:Response) => {
     })
 })
 
+// app.get('/test', async (req: Request, res: Response, next: NextFunction) => {
+//   const getBGrantToken = await getGrantToken();
+
+//    response(
+//     res,
+//        {
+//            status: 201,
+//            success: true,
+//            message:"success"
+//    }
+//   );
+
+//   console.log(getBGrantToken);
+// });
+
+
 //  router 
 app.use('/api/auth', authRouter)
 app.use('/api/user', userRouter)
@@ -44,7 +63,7 @@ app.use('/api/course', CourseRouter)
 app.use('/api/semester', semesterRouter)
 app.use('/api/course-offering', courseOfferingRouter)
 app.use('/api/enrolment',enrollmentRouter)
-
+app.use('/api/payment',paymentRouter)
 
 // global error handler 
 app.use(globalError)

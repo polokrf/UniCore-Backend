@@ -3,6 +3,7 @@ export interface ICourseOffering {
   semesterId: string;
   section:string;
   capacity: number;
+  fee:number
 }
 
 export interface IUpdateOffer{

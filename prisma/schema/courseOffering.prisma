@@ -6,7 +6,7 @@ model CourseOffering {
 
   section  String
   capacity Int?
-
+  fee Decimal? @db.Decimal(10, 2)
   isActive Boolean @default(true)
 
   enrollments Enrollment[]

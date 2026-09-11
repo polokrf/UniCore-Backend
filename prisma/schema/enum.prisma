@@ -24,3 +24,16 @@ enum EnrollmentStatus {
   CONFIRMED
   CANCELLED
 }
+
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum PaymentGateway {
+  BKASH
+}

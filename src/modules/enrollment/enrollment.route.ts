@@ -13,7 +13,7 @@ router.post(
   '/enroll-now',
   auth(Role.STUDENT),
   zodValid(enrollNow),
-enrollmentController.enrollNow
+  enrollmentController.enrollNow
   
 );
 

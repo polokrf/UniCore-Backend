@@ -6,6 +6,7 @@ model Course {
   title        String
   description  String?
   credit       Float
+ 
   isActive     Boolean  @default(true)
 
   offerings CourseOffering[]
@@ -17,3 +18,4 @@ model Course {
 
   @@map("courses")
 }
+

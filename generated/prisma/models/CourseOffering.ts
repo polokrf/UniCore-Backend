@@ -28,10 +28,12 @@ export type AggregateCourseOffering = {
 
 export type CourseOfferingAvgAggregateOutputType = {
   capacity: number | null
+  fee: runtime.Decimal | null
 }
 
 export type CourseOfferingSumAggregateOutputType = {
   capacity: number | null
+  fee: runtime.Decimal | null
 }
 
 export type CourseOfferingMinAggregateOutputType = {
@@ -41,6 +43,7 @@ export type CourseOfferingMinAggregateOutputType = {
   teacherId: string | null
   section: string | null
   capacity: number | null
+  fee: runtime.Decimal | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -53,6 +56,7 @@ export type CourseOfferingMaxAggregateOutputType = {
   teacherId: string | null
   section: string | null
   capacity: number | null
+  fee: runtime.Decimal | null
   isActive: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +69,7 @@ export type CourseOfferingCountAggregateOutputType = {
   teacherId: number
   section: number
   capacity: number
+  fee: number
   isActive: number
   createdAt: number
   updatedAt: number
@@ -74,10 +79,12 @@ export type CourseOfferingCountAggregateOutputType = {
 
 export type CourseOfferingAvgAggregateInputType = {
   capacity?: true
+  fee?: true
 }
 
 export type CourseOfferingSumAggregateInputType = {
   capacity?: true
+  fee?: true
 }
 
 export type CourseOfferingMinAggregateInputType = {
@@ -87,6 +94,7 @@ export type CourseOfferingMinAggregateInputType = {
   teacherId?: true
   section?: true
   capacity?: true
+  fee?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -99,6 +107,7 @@ export type CourseOfferingMaxAggregateInputType = {
   teacherId?: true
   section?: true
   capacity?: true
+  fee?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -111,6 +120,7 @@ export type CourseOfferingCountAggregateInputType = {
   teacherId?: true
   section?: true
   capacity?: true
+  fee?: true
   isActive?: true
   createdAt?: true
   updatedAt?: true
@@ -210,6 +220,7 @@ export type CourseOfferingGroupByOutputType = {
   teacherId: string | null
   section: string
   capacity: number | null
+  fee: runtime.Decimal | null
   isActive: boolean
   createdAt: Date
   updatedAt: Date
@@ -245,6 +256,7 @@ export type CourseOfferingWhereInput = {
   teacherId?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   section?: Prisma.StringFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableFilter<"CourseOffering"> | number | null
+  fee?: Prisma.DecimalNullableFilter<"CourseOffering"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFilter<"CourseOffering"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
@@ -261,6 +273,7 @@ export type CourseOfferingOrderByWithRelationInput = {
   teacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  fee?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -281,6 +294,7 @@ export type CourseOfferingWhereUniqueInput = Prisma.AtLeast<{
   teacherId?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   section?: Prisma.StringFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableFilter<"CourseOffering"> | number | null
+  fee?: Prisma.DecimalNullableFilter<"CourseOffering"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFilter<"CourseOffering"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
@@ -297,6 +311,7 @@ export type CourseOfferingOrderByWithAggregationInput = {
   teacherId?: Prisma.SortOrderInput | Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrderInput | Prisma.SortOrder
+  fee?: Prisma.SortOrderInput | Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -317,6 +332,7 @@ export type CourseOfferingScalarWhereWithAggregatesInput = {
   teacherId?: Prisma.StringNullableWithAggregatesFilter<"CourseOffering"> | string | null
   section?: Prisma.StringWithAggregatesFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableWithAggregatesFilter<"CourseOffering"> | number | null
+  fee?: Prisma.DecimalNullableWithAggregatesFilter<"CourseOffering"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolWithAggregatesFilter<"CourseOffering"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CourseOffering"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"CourseOffering"> | Date | string
@@ -326,6 +342,7 @@ export type CourseOfferingCreateInput = {
   id?: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -342,6 +359,7 @@ export type CourseOfferingUncheckedCreateInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -352,6 +370,7 @@ export type CourseOfferingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -368,6 +387,7 @@ export type CourseOfferingUncheckedUpdateInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -381,6 +401,7 @@ export type CourseOfferingCreateManyInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -390,6 +411,7 @@ export type CourseOfferingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -402,6 +424,7 @@ export type CourseOfferingUncheckedUpdateManyInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -430,6 +453,7 @@ export type CourseOfferingCountOrderByAggregateInput = {
   teacherId?: Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  fee?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -437,6 +461,7 @@ export type CourseOfferingCountOrderByAggregateInput = {
 
 export type CourseOfferingAvgOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
+  fee?: Prisma.SortOrder
 }
 
 export type CourseOfferingMaxOrderByAggregateInput = {
@@ -446,6 +471,7 @@ export type CourseOfferingMaxOrderByAggregateInput = {
   teacherId?: Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  fee?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -458,6 +484,7 @@ export type CourseOfferingMinOrderByAggregateInput = {
   teacherId?: Prisma.SortOrder
   section?: Prisma.SortOrder
   capacity?: Prisma.SortOrder
+  fee?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -465,6 +492,7 @@ export type CourseOfferingMinOrderByAggregateInput = {
 
 export type CourseOfferingSumOrderByAggregateInput = {
   capacity?: Prisma.SortOrder
+  fee?: Prisma.SortOrder
 }
 
 export type CourseOfferingScalarRelationFilter = {
@@ -520,6 +548,14 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type CourseOfferingCreateNestedOneWithoutEnrollmentsInput = {
@@ -624,6 +660,7 @@ export type CourseOfferingCreateWithoutCourseInput = {
   id?: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -638,6 +675,7 @@ export type CourseOfferingUncheckedCreateWithoutCourseInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -680,6 +718,7 @@ export type CourseOfferingScalarWhereInput = {
   teacherId?: Prisma.StringNullableFilter<"CourseOffering"> | string | null
   section?: Prisma.StringFilter<"CourseOffering"> | string
   capacity?: Prisma.IntNullableFilter<"CourseOffering"> | number | null
+  fee?: Prisma.DecimalNullableFilter<"CourseOffering"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFilter<"CourseOffering"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"CourseOffering"> | Date | string
@@ -689,6 +728,7 @@ export type CourseOfferingCreateWithoutEnrollmentsInput = {
   id?: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -704,6 +744,7 @@ export type CourseOfferingUncheckedCreateWithoutEnrollmentsInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -729,6 +770,7 @@ export type CourseOfferingUpdateWithoutEnrollmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -744,6 +786,7 @@ export type CourseOfferingUncheckedUpdateWithoutEnrollmentsInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -753,6 +796,7 @@ export type CourseOfferingCreateWithoutSemesterInput = {
   id?: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -767,6 +811,7 @@ export type CourseOfferingUncheckedCreateWithoutSemesterInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -803,6 +848,7 @@ export type CourseOfferingCreateWithoutTeacherInput = {
   id?: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -817,6 +863,7 @@ export type CourseOfferingUncheckedCreateWithoutTeacherInput = {
   semesterId: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -855,6 +902,7 @@ export type CourseOfferingCreateManyCourseInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -864,6 +912,7 @@ export type CourseOfferingUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -878,6 +927,7 @@ export type CourseOfferingUncheckedUpdateWithoutCourseInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -890,6 +940,7 @@ export type CourseOfferingUncheckedUpdateManyWithoutCourseInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -901,6 +952,7 @@ export type CourseOfferingCreateManySemesterInput = {
   teacherId?: string | null
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -910,6 +962,7 @@ export type CourseOfferingUpdateWithoutSemesterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -924,6 +977,7 @@ export type CourseOfferingUncheckedUpdateWithoutSemesterInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -936,6 +990,7 @@ export type CourseOfferingUncheckedUpdateManyWithoutSemesterInput = {
   teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -947,6 +1002,7 @@ export type CourseOfferingCreateManyTeacherInput = {
   semesterId: string
   section: string
   capacity?: number | null
+  fee?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -956,6 +1012,7 @@ export type CourseOfferingUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -970,6 +1027,7 @@ export type CourseOfferingUncheckedUpdateWithoutTeacherInput = {
   semesterId?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -982,6 +1040,7 @@ export type CourseOfferingUncheckedUpdateManyWithoutTeacherInput = {
   semesterId?: Prisma.StringFieldUpdateOperationsInput | string
   section?: Prisma.StringFieldUpdateOperationsInput | string
   capacity?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fee?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1025,6 +1084,7 @@ export type CourseOfferingSelect<ExtArgs extends runtime.Types.Extensions.Intern
   teacherId?: boolean
   section?: boolean
   capacity?: boolean
+  fee?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1042,6 +1102,7 @@ export type CourseOfferingSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   teacherId?: boolean
   section?: boolean
   capacity?: boolean
+  fee?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1057,6 +1118,7 @@ export type CourseOfferingSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   teacherId?: boolean
   section?: boolean
   capacity?: boolean
+  fee?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1072,12 +1134,13 @@ export type CourseOfferingSelectScalar = {
   teacherId?: boolean
   section?: boolean
   capacity?: boolean
+  fee?: boolean
   isActive?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CourseOfferingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "courseId" | "semesterId" | "teacherId" | "section" | "capacity" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["courseOffering"]>
+export type CourseOfferingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "courseId" | "semesterId" | "teacherId" | "section" | "capacity" | "fee" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["courseOffering"]>
 export type CourseOfferingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   enrollments?: boolean | Prisma.CourseOffering$enrollmentsArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -1111,6 +1174,7 @@ export type $CourseOfferingPayload<ExtArgs extends runtime.Types.Extensions.Inte
     teacherId: string | null
     section: string
     capacity: number | null
+    fee: runtime.Decimal | null
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -1547,6 +1611,7 @@ export interface CourseOfferingFieldRefs {
   readonly teacherId: Prisma.FieldRef<"CourseOffering", 'String'>
   readonly section: Prisma.FieldRef<"CourseOffering", 'String'>
   readonly capacity: Prisma.FieldRef<"CourseOffering", 'Int'>
+  readonly fee: Prisma.FieldRef<"CourseOffering", 'Decimal'>
   readonly isActive: Prisma.FieldRef<"CourseOffering", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"CourseOffering", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"CourseOffering", 'DateTime'>
