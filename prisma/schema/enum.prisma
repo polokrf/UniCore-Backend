@@ -37,3 +37,14 @@ enum PaymentStatus {
 enum PaymentGateway {
   BKASH
 }
+
+
+enum DayOfWeek {
+  SATURDAY
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+}

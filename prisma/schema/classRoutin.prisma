@@ -1,0 +1,18 @@
+model ClassRoutine {
+  id               String   @id @default(uuid())
+  courseOfferingId String
+
+  day       DayOfWeek
+  startTime DateTime 
+  endTime   DateTime
+  room      String
+
+  isActive Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courseOffering CourseOffering @relation(fields: [courseOfferingId],references: [id],onDelete: Cascade)
+  
+  @@unique([courseOfferingId, day, startTime, endTime])
+  @@map("class_routines")
+}

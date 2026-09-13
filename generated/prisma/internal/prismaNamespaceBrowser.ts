@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  ClassRoutine: 'ClassRoutine',
   Course: 'Course',
   CourseOffering: 'CourseOffering',
   Department: 'Department',
@@ -76,6 +77,21 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const ClassRoutineScalarFieldEnum = {
+  id: 'id',
+  courseOfferingId: 'courseOfferingId',
+  day: 'day',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  room: 'room',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassRoutineScalarFieldEnum = (typeof ClassRoutineScalarFieldEnum)[keyof typeof ClassRoutineScalarFieldEnum]
 
 
 export const CourseScalarFieldEnum = {

@@ -18,6 +18,11 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model ClassRoutine
+ * 
+ */
+export type ClassRoutine = Prisma.ClassRoutineModel
+/**
  * Model Course
  * 
  */

@@ -397,6 +397,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  ClassRoutine: 'ClassRoutine',
   Course: 'Course',
   CourseOffering: 'CourseOffering',
   Department: 'Department',
@@ -421,10 +422,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "course" | "courseOffering" | "department" | "enrollment" | "payment" | "semester" | "studentProfile" | "teacherProfile" | "user"
+    modelProps: "classRoutine" | "course" | "courseOffering" | "department" | "enrollment" | "payment" | "semester" | "studentProfile" | "teacherProfile" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    ClassRoutine: {
+      payload: Prisma.$ClassRoutinePayload<ExtArgs>
+      fields: Prisma.ClassRoutineFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClassRoutineFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClassRoutineFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>
+        }
+        findFirst: {
+          args: Prisma.ClassRoutineFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClassRoutineFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>
+        }
+        findMany: {
+          args: Prisma.ClassRoutineFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>[]
+        }
+        create: {
+          args: Prisma.ClassRoutineCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>
+        }
+        createMany: {
+          args: Prisma.ClassRoutineCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClassRoutineCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>[]
+        }
+        delete: {
+          args: Prisma.ClassRoutineDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>
+        }
+        update: {
+          args: Prisma.ClassRoutineUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>
+        }
+        deleteMany: {
+          args: Prisma.ClassRoutineDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClassRoutineUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClassRoutineUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>[]
+        }
+        upsert: {
+          args: Prisma.ClassRoutineUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassRoutinePayload>
+        }
+        aggregate: {
+          args: Prisma.ClassRoutineAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClassRoutine>
+        }
+        groupBy: {
+          args: Prisma.ClassRoutineGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClassRoutineGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClassRoutineCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClassRoutineCountAggregateOutputType> | number
+        }
+      }
+    }
     Course: {
       payload: Prisma.$CoursePayload<ExtArgs>
       fields: Prisma.CourseFieldRefs
@@ -1130,6 +1205,21 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ClassRoutineScalarFieldEnum = {
+  id: 'id',
+  courseOfferingId: 'courseOfferingId',
+  day: 'day',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  room: 'room',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassRoutineScalarFieldEnum = (typeof ClassRoutineScalarFieldEnum)[keyof typeof ClassRoutineScalarFieldEnum]
+
+
 export const CourseScalarFieldEnum = {
   id: 'id',
   departmentId: 'departmentId',
@@ -1341,23 +1431,16 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
- * Reference to a field of type 'Float'
+ * Reference to a field of type 'DayOfWeek'
  */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+export type EnumDayOfWeekFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DayOfWeek'>
     
 
 
 /**
- * Reference to a field of type 'Float[]'
+ * Reference to a field of type 'DayOfWeek[]'
  */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+export type ListEnumDayOfWeekFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DayOfWeek[]'>
     
 
 
@@ -1372,6 +1455,27 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 
@@ -1651,6 +1755,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  classRoutine?: Prisma.ClassRoutineOmit
   course?: Prisma.CourseOmit
   courseOffering?: Prisma.CourseOfferingOmit
   department?: Prisma.DepartmentOmit
