@@ -16,6 +16,7 @@ import response from './utils/clientResponse';
 import { getGrantToken } from './lib/bkash';
 import { paymentRouter } from './modules/payment/payment.route';
 import { routineRouter } from './modules/classRoutin/routine.route';
+import { resultRouter } from './modules/result/result.route';
 
 const app = express()
 
@@ -66,6 +67,7 @@ app.use('/api/course-offering', courseOfferingRouter)
 app.use('/api/enrolment',enrollmentRouter)
 app.use('/api/payment', paymentRouter)
 app.use('/api/class-routine', routineRouter)
+app.use('/api/results',resultRouter)
 
 // global error handler 
 app.use(globalError)

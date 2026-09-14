@@ -21,6 +21,18 @@ router.get(
   routineController.getAllClassRoutines,
 );
 
+router.get(
+  '/',
+  auth(
+    Role.ADMIN,
+    Role.SUPER_ADMIN,
+    Role.DEPARTMENT_HEAD,
+    Role.TEACHER,
+    Role.STUDENT,
+  ),
+ routineController.getSingleClassRoutines
+);
+
 
 router.patch('/:id',auth(Role.ADMIN,Role.SUPER_ADMIN),zodValid(updateClassRoutine),routineController.updateRoutine)
 

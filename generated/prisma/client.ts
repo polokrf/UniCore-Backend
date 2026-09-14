@@ -72,6 +72,11 @@ export type Enrollment = Prisma.EnrollmentModel
  */
 export type Payment = Prisma.PaymentModel
 /**
+ * Model Result
+ * 
+ */
+export type Result = Prisma.ResultModel
+/**
  * Model Semester
  * 
  */

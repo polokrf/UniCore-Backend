@@ -78,3 +78,19 @@ export const DayOfWeek = {
 } as const
 
 export type DayOfWeek = (typeof DayOfWeek)[keyof typeof DayOfWeek]
+
+
+export const Grade = {
+  A_PLUS: 'A_PLUS',
+  A: 'A',
+  A_MINUS: 'A_MINUS',
+  B_PLUS: 'B_PLUS',
+  B: 'B',
+  B_MINUS: 'B_MINUS',
+  C_PLUS: 'C_PLUS',
+  C: 'C',
+  D: 'D',
+  F: 'F'
+} as const
+
+export type Grade = (typeof Grade)[keyof typeof Grade]

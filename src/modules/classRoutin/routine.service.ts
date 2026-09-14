@@ -186,6 +186,16 @@ const getAllClassRoutine = async (user:RequestUser) => {
 }
 
 
+const getSingleRoutine = async (id:string) => {
+  const result = await prisma.classRoutine.findUniqueOrThrow({
+    where: {
+      id
+    }
+  })
+
+  return result
+}
+
 const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
   const {day,startTime,endTime,room}=payload
   const isRoutine = await prisma.classRoutine.findUniqueOrThrow({
@@ -317,6 +327,7 @@ const deleteClassRoutine = async (id: string) => {
 export const routineService = {
   createClassRoutine,
   getAllClassRoutine,
+  getSingleRoutine,
   updateRoutine,
   deleteClassRoutine
 }

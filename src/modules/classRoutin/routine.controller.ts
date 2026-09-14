@@ -26,6 +26,17 @@ const getAllClassRoutines = catchAsync(async (req:Request, res:Response) => {
     data: result,
   });
 });
+const getSingleClassRoutines = catchAsync(async (req: Request, res: Response) => {
+  const id = req.params.id!;
+  const result = await routineService.getSingleRoutine(id as string);
+
+  response(res, {
+    status: 200,
+    success: true,
+    message: 'Class routines retrieved successfully',
+    data: result,
+  });
+});
 
 const updateRoutine = catchAsync(async (req:Request, res:Response) => {
   const id = req.params.id
@@ -58,6 +69,7 @@ const deleteClassRoutine = catchAsync(async (req:Request, res:Response) => {
 export const routineController = {
   createClassRoutine,
   getAllClassRoutines,
+  getSingleClassRoutines,
   updateRoutine,
   deleteClassRoutine
 }
