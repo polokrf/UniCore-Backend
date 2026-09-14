@@ -24,4 +24,6 @@ router.get(
 
 router.patch('/:id',auth(Role.ADMIN,Role.SUPER_ADMIN),zodValid(updateClassRoutine),routineController.updateRoutine)
 
+router.delete('/:id',auth(Role.ADMIN,Role.SUPER_ADMIN) ,routineController.deleteClassRoutine)
+
 export const routineRouter =router 

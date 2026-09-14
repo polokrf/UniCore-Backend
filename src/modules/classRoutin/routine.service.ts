@@ -1,4 +1,5 @@
 
+import { fa } from "zod/v4/locales"
 import { Prisma, Role } from "../../../generated/prisma/client"
 import { prisma } from "../../lib/prisma"
 import { RequestUser } from "../../middleWear/auth"
@@ -286,11 +287,36 @@ const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
 
 
 
+const deleteClassRoutine = async (id: string) => {
+  const isRoutine = await prisma.classRoutine.findUnique({
+    where: {
+      id
+    }
+  })
 
+  if (!isRoutine) {
+    throw new Error('this routine is missing')
+  }
+
+  if (!isRoutine.isActive) {
+    throw new Error('this routine already deleted')
+  }
+
+  await prisma.classRoutine.update({
+    where: {
+      id
+    },
+    data: {
+      isActive:false
+    }
+  })  
+}
+  
 
 
 export const routineService = {
   createClassRoutine,
   getAllClassRoutine,
-  updateRoutine
+  updateRoutine,
+  deleteClassRoutine
 }

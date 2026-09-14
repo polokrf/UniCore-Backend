@@ -40,10 +40,24 @@ const updateRoutine = catchAsync(async (req:Request, res:Response) => {
 });
 
 
+const deleteClassRoutine = catchAsync(async (req:Request, res:Response) => {
+  const id = req.params.id;
+ await routineService.deleteClassRoutine(id as string);
+
+  response(res, {
+    status: 200,
+    success: true,
+    message: 'Class routines deleted successfully',
+    data: null,
+  });
+})
+
+
 
 
 export const routineController = {
   createClassRoutine,
   getAllClassRoutines,
-  updateRoutine
+  updateRoutine,
+  deleteClassRoutine
 }
