@@ -8,7 +8,7 @@ const router = express.Router()
 
 
 router.post('/register', zodValid(registerPayload), authController.userRegister)
-router.post('/email-verify', zodValid(verifyEmailPayload), authController.registerEmailVerify)
+// router.post('/email-verify', zodValid(verifyEmailPayload), authController.registerEmailVerify)
 router.post('/login',zodValid(loginPayload),authController.userLogin)
 router.post('/logout', authController.logOut)
 
