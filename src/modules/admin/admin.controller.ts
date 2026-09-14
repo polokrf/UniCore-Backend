@@ -3,7 +3,8 @@ import response from '../../utils/clientResponse';
 import { adminService } from './admin.service';
 
 const getAllUsers = catchAsync(async (req, res) => {
-  const result = await adminService.getAllUsers();
+  const query=req.query
+  const result = await adminService.getAllUsers(query);
 
   response(res, {
     status: 200,
@@ -14,7 +15,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 });
 
 const getAllTeacher = catchAsync(async (req, res) => {
-  const result = await adminService.getAllTeacher();
+  const result = await adminService.getAllTeacher(req.query);
 
   response(res, {
     status: 200,
@@ -25,7 +26,7 @@ const getAllTeacher = catchAsync(async (req, res) => {
 });
 
 const getAllStudent = catchAsync(async (req, res) => {
-  const result = await adminService.getAllStudent();
+  const result = await adminService.getAllStudent(req.query);
 
   response(res, {
     status: 200,
@@ -36,7 +37,7 @@ const getAllStudent = catchAsync(async (req, res) => {
 });
 
 const getAllEnrolment = catchAsync(async (req, res) => {
-  const result = await adminService.getAllEnrolment();
+  const result = await adminService.getAllEnrolment(req.query);
 
   response(res, {
     status: 200,
@@ -47,7 +48,7 @@ const getAllEnrolment = catchAsync(async (req, res) => {
 });
 
 const getAllResult = catchAsync(async (req, res) => {
-  const result = await adminService.getAllResult();
+  const result = await adminService.getAllResult(req.query);
 
   response(res, {
     status: 200,
