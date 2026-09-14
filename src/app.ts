@@ -17,6 +17,7 @@ import { getGrantToken } from './lib/bkash';
 import { paymentRouter } from './modules/payment/payment.route';
 import { routineRouter } from './modules/classRoutin/routine.route';
 import { resultRouter } from './modules/result/result.route';
+import { adminRouter } from './modules/admin/admin.route';
 
 const app = express()
 
@@ -67,7 +68,8 @@ app.use('/api/course-offering', courseOfferingRouter)
 app.use('/api/enrolment',enrollmentRouter)
 app.use('/api/payment', paymentRouter)
 app.use('/api/class-routine', routineRouter)
-app.use('/api/results',resultRouter)
+app.use('/api/results', resultRouter)
+app.use('/api/admin',adminRouter)
 
 // global error handler 
 app.use(globalError)
