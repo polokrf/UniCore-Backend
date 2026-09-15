@@ -724,11 +724,14 @@ const updateStudentStatus = async (id: string, status: StudentStatus) => {
       },
       data: {
         status,
+
+        ...(status === 'APPROVED' && {
+          studentId: crypto.randomInt(100000, 1000000).toString(),
+        }),
       },
     });
 
     if (status === 'APPROVED') {
-       const studentId = crypto.randomInt(100000, 1000000).toString();
       await tx.user.update({
         where: {
           id: student.userId,
@@ -737,15 +740,6 @@ const updateStudentStatus = async (id: string, status: StudentStatus) => {
           role: 'STUDENT',
         },
       });
-
-      await tx.studentProfile.update({
-        where: {
-          id:updatedStudent.id
-        },
-        data: {
-          studentId:studentId
-        }
-      })
     }
 
     return updatedStudent;
@@ -753,7 +747,6 @@ const updateStudentStatus = async (id: string, status: StudentStatus) => {
 
   return result;
 };
-
 export const adminService = {
   getAllEnrolment,
   getAllUsers,

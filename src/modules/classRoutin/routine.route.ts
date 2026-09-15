@@ -22,7 +22,7 @@ router.get(
 );
 
 router.get(
-  '/',
+  '/:id',
   auth(
     Role.ADMIN,
     Role.SUPER_ADMIN,

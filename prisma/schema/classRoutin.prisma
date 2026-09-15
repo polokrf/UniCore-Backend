@@ -3,8 +3,8 @@ model ClassRoutine {
   courseOfferingId String
 
   day       DayOfWeek
-  startTime DateTime 
-  endTime   DateTime
+  startTime String 
+  endTime   String
   room      String
 
   isActive Boolean  @default(true)

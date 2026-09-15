@@ -37,6 +37,9 @@ const enrollNow= async (payload:IEnroll,userId :string) => {
     throw new Error('is course offer is not active');
   }
   
+  if (!isCourseOffer.fee) {
+    throw new Error('is course offer fee null');
+  }
   
 
   const isEnrollment = await prisma.enrollment.findUnique({
@@ -51,6 +54,8 @@ const enrollNow= async (payload:IEnroll,userId :string) => {
   if (isEnrollment) {
     throw new Error('this enrollment already exits')
   }
+
+  
    
   const isEnrollCount = await prisma.enrollment.count({
     where: {
@@ -128,6 +133,9 @@ const cancelEnroll = async (id: string, userId: string) => {
 
   if (enrollment.status === 'CANCELLED') {
     throw new Error('This enrollment is already cancelled');
+  }
+  if (enrollment.status === "CONFIRMED") {
+    throw new Error('This enrollment is already CONFIRMED');
   }
 
   const result = await prisma.enrollment.update({

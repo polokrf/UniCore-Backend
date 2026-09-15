@@ -78,4 +78,5 @@ export const courseOfferingController = {
   getAllCourseOffering,
   getSingleCourseOffering,
   updateCourseOffering,
+  assignCourseOfferingTeacher
 };

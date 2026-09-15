@@ -29,7 +29,8 @@ const createStudentProfile = async (payload:IStudent,userId:string) => {
       departmentId,
       phone,
       batch,
-      dateOfBirth,
+      dateOfBirth:new Date(dateOfBirth),
+     
       gender,
      address
     },

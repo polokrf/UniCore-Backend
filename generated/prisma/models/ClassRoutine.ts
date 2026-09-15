@@ -28,8 +28,8 @@ export type ClassRoutineMinAggregateOutputType = {
   id: string | null
   courseOfferingId: string | null
   day: $Enums.DayOfWeek | null
-  startTime: Date | null
-  endTime: Date | null
+  startTime: string | null
+  endTime: string | null
   room: string | null
   isActive: boolean | null
   createdAt: Date | null
@@ -40,8 +40,8 @@ export type ClassRoutineMaxAggregateOutputType = {
   id: string | null
   courseOfferingId: string | null
   day: $Enums.DayOfWeek | null
-  startTime: Date | null
-  endTime: Date | null
+  startTime: string | null
+  endTime: string | null
   room: string | null
   isActive: boolean | null
   createdAt: Date | null
@@ -175,8 +175,8 @@ export type ClassRoutineGroupByOutputType = {
   id: string
   courseOfferingId: string
   day: $Enums.DayOfWeek
-  startTime: Date
-  endTime: Date
+  startTime: string
+  endTime: string
   room: string
   isActive: boolean
   createdAt: Date
@@ -208,8 +208,8 @@ export type ClassRoutineWhereInput = {
   id?: Prisma.StringFilter<"ClassRoutine"> | string
   courseOfferingId?: Prisma.StringFilter<"ClassRoutine"> | string
   day?: Prisma.EnumDayOfWeekFilter<"ClassRoutine"> | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
+  startTime?: Prisma.StringFilter<"ClassRoutine"> | string
+  endTime?: Prisma.StringFilter<"ClassRoutine"> | string
   room?: Prisma.StringFilter<"ClassRoutine"> | string
   isActive?: Prisma.BoolFilter<"ClassRoutine"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
@@ -238,8 +238,8 @@ export type ClassRoutineWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ClassRoutineWhereInput | Prisma.ClassRoutineWhereInput[]
   courseOfferingId?: Prisma.StringFilter<"ClassRoutine"> | string
   day?: Prisma.EnumDayOfWeekFilter<"ClassRoutine"> | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
+  startTime?: Prisma.StringFilter<"ClassRoutine"> | string
+  endTime?: Prisma.StringFilter<"ClassRoutine"> | string
   room?: Prisma.StringFilter<"ClassRoutine"> | string
   isActive?: Prisma.BoolFilter<"ClassRoutine"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
@@ -269,8 +269,8 @@ export type ClassRoutineScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"ClassRoutine"> | string
   courseOfferingId?: Prisma.StringWithAggregatesFilter<"ClassRoutine"> | string
   day?: Prisma.EnumDayOfWeekWithAggregatesFilter<"ClassRoutine"> | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeWithAggregatesFilter<"ClassRoutine"> | Date | string
-  endTime?: Prisma.DateTimeWithAggregatesFilter<"ClassRoutine"> | Date | string
+  startTime?: Prisma.StringWithAggregatesFilter<"ClassRoutine"> | string
+  endTime?: Prisma.StringWithAggregatesFilter<"ClassRoutine"> | string
   room?: Prisma.StringWithAggregatesFilter<"ClassRoutine"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"ClassRoutine"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ClassRoutine"> | Date | string
@@ -280,8 +280,8 @@ export type ClassRoutineScalarWhereWithAggregatesInput = {
 export type ClassRoutineCreateInput = {
   id?: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
   room: string
   isActive?: boolean
   createdAt?: Date | string
@@ -293,8 +293,8 @@ export type ClassRoutineUncheckedCreateInput = {
   id?: string
   courseOfferingId: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
   room: string
   isActive?: boolean
   createdAt?: Date | string
@@ -304,8 +304,8 @@ export type ClassRoutineUncheckedCreateInput = {
 export type ClassRoutineUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -317,8 +317,8 @@ export type ClassRoutineUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseOfferingId?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -329,8 +329,8 @@ export type ClassRoutineCreateManyInput = {
   id?: string
   courseOfferingId: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
   room: string
   isActive?: boolean
   createdAt?: Date | string
@@ -340,8 +340,8 @@ export type ClassRoutineCreateManyInput = {
 export type ClassRoutineUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -352,8 +352,8 @@ export type ClassRoutineUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   courseOfferingId?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -363,8 +363,8 @@ export type ClassRoutineUncheckedUpdateManyInput = {
 export type ClassRoutineCourseOfferingIdDayStartTimeEndTimeCompoundUniqueInput = {
   courseOfferingId: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
 }
 
 export type ClassRoutineCountOrderByAggregateInput = {
@@ -421,12 +421,12 @@ export type EnumDayOfWeekFieldUpdateOperationsInput = {
   set?: $Enums.DayOfWeek
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type ClassRoutineCreateNestedManyWithoutCourseOfferingInput = {
@@ -474,8 +474,8 @@ export type ClassRoutineUncheckedUpdateManyWithoutCourseOfferingNestedInput = {
 export type ClassRoutineCreateWithoutCourseOfferingInput = {
   id?: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
   room: string
   isActive?: boolean
   createdAt?: Date | string
@@ -485,8 +485,8 @@ export type ClassRoutineCreateWithoutCourseOfferingInput = {
 export type ClassRoutineUncheckedCreateWithoutCourseOfferingInput = {
   id?: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
   room: string
   isActive?: boolean
   createdAt?: Date | string
@@ -526,8 +526,8 @@ export type ClassRoutineScalarWhereInput = {
   id?: Prisma.StringFilter<"ClassRoutine"> | string
   courseOfferingId?: Prisma.StringFilter<"ClassRoutine"> | string
   day?: Prisma.EnumDayOfWeekFilter<"ClassRoutine"> | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
-  endTime?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
+  startTime?: Prisma.StringFilter<"ClassRoutine"> | string
+  endTime?: Prisma.StringFilter<"ClassRoutine"> | string
   room?: Prisma.StringFilter<"ClassRoutine"> | string
   isActive?: Prisma.BoolFilter<"ClassRoutine"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ClassRoutine"> | Date | string
@@ -537,8 +537,8 @@ export type ClassRoutineScalarWhereInput = {
 export type ClassRoutineCreateManyCourseOfferingInput = {
   id?: string
   day: $Enums.DayOfWeek
-  startTime: Date | string
-  endTime: Date | string
+  startTime: string
+  endTime: string
   room: string
   isActive?: boolean
   createdAt?: Date | string
@@ -548,8 +548,8 @@ export type ClassRoutineCreateManyCourseOfferingInput = {
 export type ClassRoutineUpdateWithoutCourseOfferingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -559,8 +559,8 @@ export type ClassRoutineUpdateWithoutCourseOfferingInput = {
 export type ClassRoutineUncheckedUpdateWithoutCourseOfferingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -570,8 +570,8 @@ export type ClassRoutineUncheckedUpdateWithoutCourseOfferingInput = {
 export type ClassRoutineUncheckedUpdateManyWithoutCourseOfferingInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   day?: Prisma.EnumDayOfWeekFieldUpdateOperationsInput | $Enums.DayOfWeek
-  startTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endTime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
   room?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -651,8 +651,8 @@ export type $ClassRoutinePayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     courseOfferingId: string
     day: $Enums.DayOfWeek
-    startTime: Date
-    endTime: Date
+    startTime: string
+    endTime: string
     room: string
     isActive: boolean
     createdAt: Date
@@ -1084,8 +1084,8 @@ export interface ClassRoutineFieldRefs {
   readonly id: Prisma.FieldRef<"ClassRoutine", 'String'>
   readonly courseOfferingId: Prisma.FieldRef<"ClassRoutine", 'String'>
   readonly day: Prisma.FieldRef<"ClassRoutine", 'DayOfWeek'>
-  readonly startTime: Prisma.FieldRef<"ClassRoutine", 'DateTime'>
-  readonly endTime: Prisma.FieldRef<"ClassRoutine", 'DateTime'>
+  readonly startTime: Prisma.FieldRef<"ClassRoutine", 'String'>
+  readonly endTime: Prisma.FieldRef<"ClassRoutine", 'String'>
   readonly room: Prisma.FieldRef<"ClassRoutine", 'String'>
   readonly isActive: Prisma.FieldRef<"ClassRoutine", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ClassRoutine", 'DateTime'>

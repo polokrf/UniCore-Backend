@@ -1,6 +1,6 @@
 import { prisma } from '../../lib/prisma';
 import generateId from '../../utils/randomId';
-import { ITeacher } from './teacher.interface';
+import { ITeacher, ITeacherUpdate } from './teacher.interface';
 
 const createTeacherProfile = async (payload: ITeacher,userId:string) => {
   const {  departmentId, designation, phone, qualification, specialization, joiningDate, bio } = payload
@@ -58,7 +58,7 @@ const getSingleTeacherProfile = async (id: string) => {
   return result;
 };
 
-const updateTeacherProfile = async (payload:any,userId:string) => {
+const updateTeacherProfile = async (payload:ITeacherUpdate,userId:string) => {
   const result = await prisma.teacherProfile.update({
     where: {
       userId:userId

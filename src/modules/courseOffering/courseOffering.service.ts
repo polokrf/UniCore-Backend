@@ -139,5 +139,5 @@ export const courseOfferingService = {
   getAllCourseOffering,
   getSingleCourseOffering,
   updateCourseOffering,
-  assignCourseOfferingTeacher
+  assignCourseOfferingTeacher,
 };

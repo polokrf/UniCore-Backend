@@ -10,8 +10,8 @@ const router = express.Router()
 
 router.post('/', auth(Role.ADMIN, Role.SUPER_ADMIN), zodValid(createResult), resultController.createResult)
 
-router.get('/',auth(Role.ADMIN,Role.SUPER_ADMIN,Role.STUDENT),resultController.getResult)
-router.get('/:id',auth(Role.ADMIN,Role.SUPER_ADMIN,Role.STUDENT),resultController.getSingleResult)
+router.get('/',auth(Role.STUDENT),resultController.getResult)
+router.get('/:id',auth(Role.STUDENT),resultController.getSingleResult)
 
 
 

@@ -20,7 +20,7 @@ router.post(
 );
 
 
-router.get('', auth(), studentController.getStudentProfile);
+router.get('', auth(Role.STUDENT), studentController.getStudentProfile);
 
 router.patch(
 '/update-won-profile',

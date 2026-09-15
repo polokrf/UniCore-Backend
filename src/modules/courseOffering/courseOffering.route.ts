@@ -31,6 +31,6 @@ router.patch(
   
 );
 
-router.patch('/assign-teacher/:id',auth(Role.SUPER_ADMIN,Role.ADMIN))
+router.patch('/assign-teacher/:id',auth(Role.SUPER_ADMIN,Role.ADMIN),courseOfferingController.assignCourseOfferingTeacher)
 
 export const courseOfferingRouter = router;
