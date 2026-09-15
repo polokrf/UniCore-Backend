@@ -146,3 +146,5 @@ export const authController = {
   logOut,
   myProfile
 }
+
+

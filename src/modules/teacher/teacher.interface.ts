@@ -1,5 +1,4 @@
 export interface ITeacher {
-  
   departmentId:string;
   designation:string;
   phone?:string;

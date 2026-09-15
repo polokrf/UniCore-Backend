@@ -1,7 +1,6 @@
 import z from 'zod'
 
 export const createTeacher = z.object({
-  userId: z.string('only provide string userId'),
   departmentId: z.string('only provide string departmentId'),
   designation: z.string('only provide string data'),
   phone: z.string('only provide string data').optional(),

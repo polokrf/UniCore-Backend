@@ -2,8 +2,9 @@ import { Prisma } from "../../../generated/prisma/client";
 import { Role, StudentStatus, TeacherStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { IEnrollment, IResult, IStudent, ITeacher, IUser } from "./admin.interface";
+import crypto from 'crypto'
 
-const getAllUsers = async (query:IUser ) => {
+const getAllUsers = async (query: IUser) => {
   const {
     search,
     role,
@@ -14,15 +15,24 @@ const getAllUsers = async (query:IUser ) => {
     limit = 10,
   } = query;
 
-  const skip = (page - 1) * limit;
+  
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skip = (pageNumber - 1) * limitNumber;
+
+  
+  const isActiveBoolean =
+    isActive !== undefined
+      ? isActive === true || isActive === ('true' as any)
+      : undefined;
 
   const where: Prisma.UserWhereInput = {
     ...(role && {
       role,
     }),
 
-    ...(isActive !== undefined && {
-      isActive,
+    ...(isActiveBoolean !== undefined && {
+      isActive: isActiveBoolean,
     }),
 
     ...(search && {
@@ -43,17 +53,21 @@ const getAllUsers = async (query:IUser ) => {
     }),
   };
 
+  
+  const allowedSortFields = ['createdAt', 'firstName', 'email', 'role'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+
   const [users, total] = await prisma.$transaction([
     prisma.user.findMany({
       where,
       omit: {
-        password:true
+        password: true,
       },
       orderBy: {
-        [sortBy]: sortOrder,
+        [safeSortBy]: sortOrder === 'asc' ? 'asc' : 'desc',
       },
       skip,
-      take: limit,
+      take: limitNumber,
     }),
 
     prisma.user.count({
@@ -64,15 +78,14 @@ const getAllUsers = async (query:IUser ) => {
   return {
     data: users,
     meta: {
-      page,
-      limit,
+      page: pageNumber,
+      limit: limitNumber,
       total,
-      totalPage: Math.ceil(total / limit),
+      totalPage: Math.ceil(total / limitNumber),
     },
   };
 };
-
-const getAllTeacher = async (query:ITeacher ) => {
+const getAllTeacher = async (query: ITeacher) => {
   const {
     search,
     status,
@@ -84,7 +97,16 @@ const getAllTeacher = async (query:ITeacher ) => {
     limit = 10,
   } = query;
 
-  const skip = (page - 1) * limit;
+ 
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skip = (pageNumber - 1) * limitNumber;
+
+  
+  const isActiveBoolean =
+    isActive !== undefined
+      ? isActive === true || (isActive as any) === 'true'
+      : undefined;
 
   const where: Prisma.TeacherProfileWhereInput = {
     ...(status && {
@@ -95,8 +117,8 @@ const getAllTeacher = async (query:ITeacher ) => {
       departmentId,
     }),
 
-    ...(isActive !== undefined && {
-      isActive,
+    ...(isActiveBoolean !== undefined && {
+      isActive: isActiveBoolean,
     }),
 
     ...(search && {
@@ -133,18 +155,27 @@ const getAllTeacher = async (query:ITeacher ) => {
     }),
   };
 
+  
+  const allowedSortFields = ['createdAt', 'employeeId', 'designation'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
+
   const [teachers, total] = await prisma.$transaction([
     prisma.teacherProfile.findMany({
       where,
       include: {
-        user: true,
+        user: {
+          omit: {
+            password: true,
+          },
+        },
         department: true,
       },
       orderBy: {
-        [sortBy]: sortOrder,
+        [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limit,
+      take: limitNumber, 
     }),
 
     prisma.teacherProfile.count({
@@ -155,15 +186,15 @@ const getAllTeacher = async (query:ITeacher ) => {
   return {
     data: teachers,
     meta: {
-      page,
-      limit,
+      page: pageNumber,
+      limit: limitNumber,
       total,
-      totalPage: Math.ceil(total / limit),
+      totalPage: Math.ceil(total / limitNumber),
     },
   };
 };
 
-const getAllStudent = async (query:IStudent ) => {
+const getAllStudent = async (query: IStudent) => {
   const {
     search,
     status,
@@ -177,7 +208,27 @@ const getAllStudent = async (query:IStudent ) => {
     limit = 10,
   } = query;
 
-  const skip = (page - 1) * limit;
+ 
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skip = (pageNumber - 1) * limitNumber;
+
+  
+  const isActiveBoolean =
+    isActive !== undefined
+      ? isActive === true || (isActive as any) === 'true'
+      : undefined;
+
+  
+  const batchNumber =
+    batch !== undefined && batch !== null && batch !== ('' as any)
+      ? Number(batch)
+      : undefined;
+
+  const semesterNumber =
+    semester !== undefined && semester !== null && semester !== ('' as any)
+      ? Number(semester)
+      : undefined;
 
   const where: Prisma.StudentProfileWhereInput = {
     ...(status && {
@@ -188,16 +239,18 @@ const getAllStudent = async (query:IStudent ) => {
       departmentId,
     }),
 
-    ...(batch !== undefined && {
-      batch,
-    }),
+    ...(batchNumber !== undefined &&
+      !Number.isNaN(batchNumber) && {
+        batch: batchNumber,
+      }),
 
-    ...(semester !== undefined && {
-      semester,
-    }),
+    ...(semesterNumber !== undefined &&
+      !Number.isNaN(semesterNumber) && {
+        semester: semesterNumber,
+      }),
 
-    ...(isActive !== undefined && {
-      isActive,
+    ...(isActiveBoolean !== undefined && {
+      isActive: isActiveBoolean,
     }),
 
     ...(search && {
@@ -234,6 +287,11 @@ const getAllStudent = async (query:IStudent ) => {
     }),
   };
 
+  
+  const allowedSortFields = ['createdAt', 'batch', 'semester', 'studentId'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
+
   const [students, total] = await prisma.$transaction([
     prisma.studentProfile.findMany({
       where,
@@ -242,10 +300,10 @@ const getAllStudent = async (query:IStudent ) => {
         department: true,
       },
       orderBy: {
-        [sortBy]: sortOrder,
+        [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limit,
+      take: limitNumber, 
     }),
 
     prisma.studentProfile.count({
@@ -256,15 +314,15 @@ const getAllStudent = async (query:IStudent ) => {
   return {
     data: students,
     meta: {
-      page,
-      limit,
+      page: pageNumber,
+      limit: limitNumber,
       total,
-      totalPage: Math.ceil(total / limit),
+      totalPage: Math.ceil(total / limitNumber),
     },
   };
 };
 
-const getAllEnrolment = async (query:IEnrollment ) => {
+const getAllEnrolment = async (query: IEnrollment) => {
   const {
     search,
     status,
@@ -278,7 +336,10 @@ const getAllEnrolment = async (query:IEnrollment ) => {
     limit = 10,
   } = query;
 
-  const skip = (page - 1) * limit;
+ 
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skip = (pageNumber - 1) * limitNumber;
 
   const where: Prisma.EnrollmentWhereInput = {
     ...(status && {
@@ -359,6 +420,11 @@ const getAllEnrolment = async (query:IEnrollment ) => {
     }),
   };
 
+ 
+  const allowedSortFields = ['createdAt', 'status'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
+
   const [enrollments, total] = await prisma.$transaction([
     prisma.enrollment.findMany({
       where,
@@ -367,8 +433,8 @@ const getAllEnrolment = async (query:IEnrollment ) => {
           include: {
             user: {
               omit: {
-                password:true
-              }
+                password: true,
+              },
             },
             department: true,
           },
@@ -384,13 +450,13 @@ const getAllEnrolment = async (query:IEnrollment ) => {
             },
           },
         },
-        payment: true,
+        payments: true,
       },
       orderBy: {
-        [sortBy]: sortOrder,
+        [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limit,
+      take: limitNumber, // 
     }),
 
     prisma.enrollment.count({
@@ -401,15 +467,15 @@ const getAllEnrolment = async (query:IEnrollment ) => {
   return {
     data: enrollments,
     meta: {
-      page,
-      limit,
+      page: pageNumber,
+      limit: limitNumber,
       total,
-      totalPage: Math.ceil(total / limit),
+      totalPage: Math.ceil(total / limitNumber),
     },
   };
 };
 
-const getAllResult = async (query:IResult) => {
+const getAllResult = async (query: IResult) => {
   const {
     search,
     grade,
@@ -423,15 +489,24 @@ const getAllResult = async (query:IResult) => {
     limit = 10,
   } = query;
 
-  const skip = (page - 1) * limit;
+ 
+  const pageNumber = Number(page) || 1;
+  const limitNumber = Number(limit) || 10;
+  const skip = (pageNumber - 1) * limitNumber;
+
+  
+  const publishedBoolean =
+    published !== undefined
+      ? published === true || (published as any) === 'true'
+      : undefined;
 
   const where: Prisma.ResultWhereInput = {
     ...(grade && {
       grade,
     }),
 
-    ...(published !== undefined && {
-      published,
+    ...(publishedBoolean !== undefined && {
+      published: publishedBoolean,
     }),
 
     ...(departmentId || semesterId || courseId
@@ -523,6 +598,11 @@ const getAllResult = async (query:IResult) => {
     }),
   };
 
+  
+  const allowedSortFields = ['createdAt', 'marks', 'grade'];
+  const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+  const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
+
   const [results, total] = await prisma.$transaction([
     prisma.result.findMany({
       where,
@@ -533,8 +613,8 @@ const getAllResult = async (query:IResult) => {
               include: {
                 user: {
                   omit: {
-                    password:true
-                  }
+                    password: true,
+                  },
                 },
                 department: true,
               },
@@ -554,10 +634,10 @@ const getAllResult = async (query:IResult) => {
         },
       },
       orderBy: {
-        [sortBy]: sortOrder,
+        [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limit,
+      take: limitNumber, 
     }),
 
     prisma.result.count({
@@ -568,10 +648,10 @@ const getAllResult = async (query:IResult) => {
   return {
     data: results,
     meta: {
-      page,
-      limit,
+      page: pageNumber,
+      limit: limitNumber,
       total,
-      totalPage: Math.ceil(total / limit),
+      totalPage: Math.ceil(total / limitNumber),
     },
   };
 };
@@ -588,6 +668,7 @@ const updateTeacherStatus = async (id: string, status: TeacherStatus) => {
   }
 
   const result = await prisma.$transaction(async tx => {
+    
     const updatedTeacher = await tx.teacherProfile.update({
       where: {
         id,
@@ -598,14 +679,25 @@ const updateTeacherStatus = async (id: string, status: TeacherStatus) => {
     });
 
     if (status === 'APPROVED') {
+      const employeeId = crypto.randomInt(100000,1000000).toString()
       await tx.user.update({
         where: {
           id: teacher.userId,
+          
         },
         data: {
           role: 'TEACHER',
         },
       });
+
+      await tx.teacherProfile.update({
+        where: {
+          id:updatedTeacher.id
+        },
+        data: {
+          employeeId:employeeId
+        }
+      })
     }
 
     return updatedTeacher;
@@ -636,6 +728,7 @@ const updateStudentStatus = async (id: string, status: StudentStatus) => {
     });
 
     if (status === 'APPROVED') {
+       const studentId = crypto.randomInt(100000, 1000000).toString();
       await tx.user.update({
         where: {
           id: student.userId,
@@ -644,6 +737,15 @@ const updateStudentStatus = async (id: string, status: StudentStatus) => {
           role: 'STUDENT',
         },
       });
+
+      await tx.studentProfile.update({
+        where: {
+          id:updatedStudent.id
+        },
+        data: {
+          studentId:studentId
+        }
+      })
     }
 
     return updatedStudent;

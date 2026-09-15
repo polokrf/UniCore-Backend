@@ -39,7 +39,7 @@ router.get(
 );
 
 router.patch(
-  '/teachers/:id/status',
+  '/teachers/:id',
 
   auth(Role.ADMIN, Role.SUPER_ADMIN),
   zodValid(updateTeacherStatusSchema),
@@ -47,7 +47,7 @@ router.patch(
 );
 
 router.patch(
-  '/students/:id/status',
+  '/students/:id',
   auth(Role.ADMIN, Role.SUPER_ADMIN),
   zodValid(updateTeacherStatusSchema),
   adminController.updateStudentStatus,

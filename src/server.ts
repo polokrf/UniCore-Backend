@@ -14,8 +14,8 @@ const server = async () => {
     await redisClient.connect()
     console.log('redis is connect')
     
-    await transporter.verify();
-    console.log('gmail nodemailer  connect success');
+    // await transporter.verify();
+    // console.log('gmail nodemailer  connect success');
     
     app.listen(config.port, () => {
       console.log(`server is run port ${config.port}`);

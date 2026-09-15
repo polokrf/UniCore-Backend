@@ -230,6 +230,9 @@ const myProfile = async (userId:string) => {
   const profile = await prisma.user.findUnique({
     where: {
       id:userId
+    },
+    omit: {
+      password:true
     }
   })
 
