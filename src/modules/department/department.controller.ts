@@ -14,7 +14,8 @@ const createDepartment = catchAsync(async (req:Request, res:Response, next:NextF
   });
 })
 const getAllDepartment = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
-  const result = await departmentService.getAllDepartment()
+  const query =req.query
+  const result = await departmentService.getAllDepartment(query)
 
   response(res, {
     status: 200,

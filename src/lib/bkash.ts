@@ -1,20 +1,23 @@
-import config from "../config"
-import redisClient from "./redis";
+import config from '../config';
+import { AppError } from '../utils/AppError';
+import redisClient from './redis';
+
 
 export const getGrantToken = async () => {
-  
-  const redisIdTokenKey = 'bkash:id_token'
-  const redisRefreshKey = 'bkash:refresh_token'
+  const redisIdTokenKey = 'bkash:id_token';
+  const redisRefreshKey = 'bkash:refresh_token';
 
+  let redisIdToken = await redisClient.get(redisIdTokenKey);
+  const redisIdTokenTtl = await redisClient.ttl(redisIdTokenKey);
 
-  
-  let redisIdToken = await redisClient.get(redisIdTokenKey)
-  const redisIdTokenTtl= await redisClient.ttl(redisIdTokenKey)
-  
-  const redisRefreshToken = await redisClient.get(redisRefreshKey)
+  const redisRefreshToken = await redisClient.get(redisRefreshKey);
   const redisRefreshTokenTtl = await redisClient.ttl(redisRefreshKey);
 
-  if ((redisIdTokenTtl <= 600 || !redisIdToken) && redisRefreshToken && redisRefreshTokenTtl >= 600) {
+  if (
+    (redisIdTokenTtl <= 600 || !redisIdToken) &&
+    redisRefreshToken &&
+    redisRefreshTokenTtl >= 600
+  ) {
     const response = await fetch(
       `${config.bkash_base_url}/tokenized/checkout/token/refresh`,
       {
@@ -29,15 +32,15 @@ export const getGrantToken = async () => {
         body: JSON.stringify({
           app_key: config.bkash_api_key,
           app_secret: config.bkash_api_secret,
-          refresh_token:redisRefreshToken
+          refresh_token: redisRefreshToken,
         }),
       },
     );
 
-     if (!response.ok) {
-       throw new Error('bkash grant token not generate');
-     }
-   
+    if (!response.ok) {
+      throw new AppError(500, 'bkash grant token not generate');
+    }
+
     const refResult = await response.json();
 
     await redisClient.set(redisIdTokenKey, refResult.id_token, {
@@ -47,19 +50,13 @@ export const getGrantToken = async () => {
       },
     });
 
-    
-
-
     redisIdToken = refResult.id_token;
 
     return redisIdToken;
-
-
   }
-  
 
   if (redisIdTokenTtl > 600) {
-    return redisIdToken
+    return redisIdToken;
   }
 
   const res = await fetch(
@@ -81,18 +78,18 @@ export const getGrantToken = async () => {
 
   // console.log(res)
   if (!res.ok) {
-    throw new Error('bkash grant token not generate')
+    throw new AppError(500, 'bkash grant token not generate');
   }
 
-  const result = await res.json()
+  const result = await res.json();
 
   await redisClient.set(redisIdTokenKey, result.id_token, {
     expiration: {
       type: 'EX',
-      value: 60 * 60
-     }
-  })
-  
+      value: 60 * 60,
+    },
+  });
+
   await redisClient.set(redisRefreshKey, result.refresh_token, {
     expiration: {
       type: 'EX',
@@ -100,9 +97,7 @@ export const getGrantToken = async () => {
     },
   });
 
-  redisIdToken = result.id_token
+  redisIdToken = result.id_token;
 
-  return redisIdToken
-
-  
-}
+  return redisIdToken;
+};

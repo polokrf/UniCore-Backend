@@ -1,57 +1,51 @@
+import { fa } from 'zod/v4/locales';
+import { Prisma, Role } from '../../../generated/prisma/client';
+import { prisma } from '../../lib/prisma';
+import { RequestUser } from '../../middleWear/auth';
+import { IClassRoutine, IClassRoutineUpdate } from './routine.interface';
+import { AppError } from '../../utils/AppError';
 
-import { fa } from "zod/v4/locales"
-import { Prisma, Role } from "../../../generated/prisma/client"
-import { prisma } from "../../lib/prisma"
-import { RequestUser } from "../../middleWear/auth"
-import { IClassRoutine, IClassRoutineUpdate } from "./routine.interface"
+const createClassRoutine = async (payload: IClassRoutine) => {
+  const { courseOfferingId, day, startTime, endTime, room } = payload;
 
-const createClassRoutine = async (payload:IClassRoutine) => { 
- 
-
-  const { courseOfferingId, day, startTime, endTime, room } = payload
-
-  
   const courseOffering = await prisma.courseOffering.findFirstOrThrow({
     where: {
-      id:courseOfferingId
-    }
-  })
-
+      id: courseOfferingId,
+    },
+  });
 
   if (!courseOffering.isActive) {
-    throw new Error('this course not active')
+    throw new AppError(409, 'this course not active');
   }
 
-    if (!courseOffering.teacherId) {
-      throw new Error('No teacher assigned to this course');
-    }
+  if (!courseOffering.teacherId) {
+    throw new AppError(409, 'No teacher assigned to this course');
+  }
 
   const isTeacher = await prisma.teacherProfile.findFirstOrThrow({
     where: {
-      id: courseOffering.teacherId
-    }
-  })
+      id: courseOffering.teacherId,
+    },
+  });
 
   if (!isTeacher.isActive || isTeacher.status !== 'APPROVED') {
-    throw new Error('this class teacher not active or approved')
+    throw new AppError(409, 'this class teacher not active or approved');
   }
-  
+
   const classRoutine = await prisma.classRoutine.findUnique({
     where: {
       courseOfferingId_day_startTime_endTime: {
         courseOfferingId,
         day,
         startTime,
-        endTime
-      }
-    }
-  }) 
-
+        endTime,
+      },
+    },
+  });
 
   if (classRoutine) {
-    throw new Error('this routine slot already exist class')
+    throw new AppError(409, 'this routine slot already exist class');
   }
-
 
   const roomConflict = await prisma.classRoutine.findFirst({
     where: {
@@ -59,21 +53,40 @@ const createClassRoutine = async (payload:IClassRoutine) => {
       room,
       isActive: true,
       startTime: {
-        lt:endTime
+        lt: endTime,
       },
 
       endTime: {
-        gt:startTime
-      }
-
-    }
-  })
- 
+        gt: startTime,
+      },
+    },
+  });
 
   if (roomConflict) {
-    throw new Error('This room is already booked at this time');
+    throw new AppError(409, 'This room is already booked at this time');
   }
-   
+
+  // Same rule as updateRoutine and assignCourseOfferingTeacher: the offering's
+  // teacher cannot have two overlapping classes on one day (touching times such
+  // as 10:30-11:00 after 09:00-10:30 are fine). The offering's own other
+  // routines count too, and inactive routines never block.
+  const teacherConflict = await prisma.classRoutine.findFirst({
+    where: {
+      day,
+      isActive: true,
+      startTime: { lt: endTime },
+      endTime: { gt: startTime },
+      courseOffering: { teacherId: isTeacher.id },
+    },
+    include: { courseOffering: { include: { course: true } } },
+  });
+
+  if (teacherConflict) {
+    throw new AppError(
+      409,
+      `This teacher already has a class at this time (${teacherConflict.courseOffering.course.code}, ${teacherConflict.day} ${teacherConflict.startTime}-${teacherConflict.endTime})`,
+    );
+  }
 
   const createRoutine = await prisma.classRoutine.create({
     data: {
@@ -81,74 +94,66 @@ const createClassRoutine = async (payload:IClassRoutine) => {
       day,
       startTime,
       endTime,
-      room
-    }
-  })
+      room,
+    },
+  });
 
+  return createRoutine;
+};
 
-  return createRoutine
-  
-
-
-}
-
-
-const getAllClassRoutine = async (user:RequestUser) => {
-  const where: Prisma.ClassRoutineWhereInput= {
-    isActive:true
-  }
-
+const getAllClassRoutine = async (user: RequestUser) => {
+  const where: Prisma.ClassRoutineWhereInput = {
+    isActive: true,
+  };
 
   if (user.role === Role.STUDENT) {
     const student = await prisma.studentProfile.findUniqueOrThrow({
       where: {
-        userId:user.userId
+        userId: user.userId,
       },
       select: {
-        departmentId:true
-      }
-    })
+        departmentId: true,
+      },
+    });
 
     where.courseOffering = {
       course: {
-        departmentId:student.departmentId
-      }
-    }
+        departmentId: student.departmentId,
+      },
+    };
   }
 
   if (user.role === Role.DEPARTMENT_HEAD) {
     const departmentHead = await prisma.teacherProfile.findUniqueOrThrow({
       where: {
-        userId:user.userId
+        userId: user.userId,
       },
       select: {
-        departmentId:true
-      }
-    })
+        departmentId: true,
+      },
+    });
 
-    where.courseOffering ={
+    where.courseOffering = {
       course: {
-        departmentId:departmentHead.departmentId
-      }
-    }
+        departmentId: departmentHead.departmentId,
+      },
+    };
   }
-
 
   if (user.role === Role.TEACHER) {
     const teacher = await prisma.teacherProfile.findUniqueOrThrow({
       where: {
-        userId:user.userId
+        userId: user.userId,
       },
-      select:{
-        id:true
-      }
-    })
+      select: {
+        id: true,
+      },
+    });
 
     where.courseOffering = {
-      teacherId:teacher.id
-    }
+      teacherId: teacher.id,
+    };
   }
-
 
   const routine = await prisma.classRoutine.findMany({
     where,
@@ -167,6 +172,7 @@ const getAllClassRoutine = async (user:RequestUser) => {
               },
             },
           },
+        
         },
       },
     },
@@ -181,41 +187,58 @@ const getAllClassRoutine = async (user:RequestUser) => {
     ],
   });
 
-  return routine
+  return routine;
+};
 
-}
-
-
-const getSingleRoutine = async (id:string) => {
+const getSingleRoutine = async (id: string) => {
   const result = await prisma.classRoutine.findUniqueOrThrow({
     where: {
-      id
-    }
-  })
+      id,
+    },
 
-  return result
-}
+    include: {
+      courseOffering: {
+        include: {
+          course: true,
+          semester: true,
+          teacher: {
+            include: {
+              user: {
+                select: {
+                  firstName: true,
+                  email: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return result;
+};
 
 const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
-  const {day,startTime,endTime,room}=payload
+  const { day, startTime, endTime, room } = payload;
   const isRoutine = await prisma.classRoutine.findUniqueOrThrow({
     where: {
-    id:id
+      id: id,
     },
     include: {
-      courseOffering:true
-    }
-    
-  })
-  
-  const newDay = day ?? isRoutine.day;
-  const newRoom = room ?? isRoutine.room
+      courseOffering: true,
+    },
+  });
 
-  const newStartTime = startTime ? new Date(`1970-01-01T${startTime}:00`): isRoutine.startTime;
-  const newEndTime = endTime? new Date(`1970-01-01T${endTime}:00`): isRoutine.endTime; 
+  const newDay = day ?? isRoutine.day;
+  const newRoom = room ?? isRoutine.room;
+
+  // times are stored as "HH:mm" text; zero-padded 24h text compares correctly
+  const newStartTime = startTime ?? isRoutine.startTime;
+  const newEndTime = endTime ?? isRoutine.endTime;
 
   if (newStartTime >= newEndTime) {
-    throw new Error('End time must be after start time');
+    throw new AppError(400, 'End time must be after start time');
   }
 
   const roomConflict = await prisma.classRoutine.findFirst({
@@ -236,7 +259,7 @@ const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
   });
 
   if (roomConflict) {
-    throw new Error('This room is already booked at this time');
+    throw new AppError(409, 'This room is already booked at this time');
   }
 
   const teacherId = isRoutine.courseOffering.teacherId;
@@ -262,10 +285,9 @@ const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
     });
 
     if (teacherConflict) {
-      throw new Error('This teacher already has a class at this time');
+      throw new AppError(409, 'This teacher already has a class at this time');
     }
   }
-
 
   const updatedRoutine = await prisma.classRoutine.update({
     where: {
@@ -273,7 +295,7 @@ const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
     },
     data: {
       ...(day !== undefined && {
-        day:day,
+        day: day,
       }),
 
       ...(startTime !== undefined && {
@@ -284,50 +306,44 @@ const updateRoutine = async (id: string, payload: IClassRoutineUpdate) => {
         endTime: newEndTime,
       }),
 
-      ... (room !== undefined && {
+      ...(room !== undefined && {
         room: newRoom,
       }),
     },
   });
 
   return updatedRoutine;
-}
-
-
-
-
+};
 
 const deleteClassRoutine = async (id: string) => {
   const isRoutine = await prisma.classRoutine.findUnique({
     where: {
-      id
-    }
-  })
+      id,
+    },
+  });
 
   if (!isRoutine) {
-    throw new Error('this routine is missing')
+    throw new AppError(404, 'this routine is missing');
   }
 
   if (!isRoutine.isActive) {
-    throw new Error('this routine already deleted')
+    throw new AppError(409, 'this routine already deleted');
   }
 
   await prisma.classRoutine.update({
     where: {
-      id
+      id,
     },
     data: {
-      isActive:false
-    }
-  })  
-}
-  
-
+      isActive: false,
+    },
+  });
+};
 
 export const routineService = {
   createClassRoutine,
   getAllClassRoutine,
   getSingleRoutine,
   updateRoutine,
-  deleteClassRoutine
-}
+  deleteClassRoutine,
+};

@@ -10,5 +10,6 @@ const router = express.Router()
 
 
 router.patch('/update-profile-photo',auth(Role.ADMIN,Role.DEPARTMENT_HEAD,Role.SUPER_ADMIN,Role.TEACHER,Role.STUDENT,Role.USER), upload.single('image'),userController.updateUserPhoto)
+router.patch('/update-status/:id',auth(Role.ADMIN,Role.SUPER_ADMIN),userController.updateUserStatus)
 
 export const userRouter = router

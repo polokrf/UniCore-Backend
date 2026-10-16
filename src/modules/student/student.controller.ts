@@ -33,6 +33,21 @@ const getStudentProfile = catchAsync(
     });
   },
 );
+const getSingleStudentProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id
+    const result = await studentService.getSingleStudentProfile(
+     id as string,
+    );
+
+    response(res, {
+      status: 200,
+      success: true,
+      message: 'Student profile retrieve successfully',
+      data: result,
+    });
+  },
+);
 
 const updateStudentProfile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -54,5 +69,6 @@ const updateStudentProfile = catchAsync(
 export const studentController = {
   createStudentProfile,
   getStudentProfile,
-  updateStudentProfile
+  updateStudentProfile,
+  getSingleStudentProfile
 };

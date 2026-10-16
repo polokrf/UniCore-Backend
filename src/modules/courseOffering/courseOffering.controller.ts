@@ -3,7 +3,7 @@ import catchAsync from '../../utils/catchAsync';
 
 import response from '../../utils/clientResponse';
 import { courseOfferingService } from './courseOffering.service';
-
+import { RequestUser } from '../../middleWear/auth';
 
 const createCourseOffering = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -34,7 +34,9 @@ const getSingleCourseOffering = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
 
-    const result = await courseOfferingService.getSingleCourseOffering(id as string);
+    const result = await courseOfferingService.getSingleCourseOffering(
+      id as string,
+    );
 
     response(res, {
       status: 200,
@@ -48,7 +50,10 @@ const getSingleCourseOffering = catchAsync(
 const updateCourseOffering = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    const result = await courseOfferingService.updateCourseOffering(req.body, id as string);
+    const result = await courseOfferingService.updateCourseOffering(
+      req.body,
+      id as string,
+    );
 
     response(res, {
       status: 200,
@@ -61,22 +66,41 @@ const updateCourseOffering = catchAsync(
 const assignCourseOfferingTeacher = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    const result = await courseOfferingService.updateCourseOffering(req.body, id as string);
+    const result = await courseOfferingService.assignCourseOfferingTeacher(
+      req.body,
+      id as string,
+    );
 
     response(res, {
       status: 200,
       success: true,
-      message: 'course offering  update successful',
+      message: 'teacher assigned to the course offering successfully',
       data: result,
     });
   },
 );
 
+const getRoster = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await courseOfferingService.getRoster(
+      req.params.id as string,
+      req.user as RequestUser,
+      req.query,
+    );
+    response(res, {
+      status: 200,
+      success: true,
+      message: 'class roster retrieve successfully',
+      data: result,
+    });
+  },
+);
 
 export const courseOfferingController = {
   createCourseOffering,
   getAllCourseOffering,
   getSingleCourseOffering,
   updateCourseOffering,
-  assignCourseOfferingTeacher
+  assignCourseOfferingTeacher,
+  getRoster,
 };

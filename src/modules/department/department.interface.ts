@@ -12,3 +12,10 @@ export interface IDepartmentUpdate {
   description?: string;
   isActive?:boolean;
 }
+
+export interface IQuery{
+  search?:string | undefined
+  isActive?:string | undefined
+  page?:number,
+  limit?:number,
+}

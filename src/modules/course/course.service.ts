@@ -1,26 +1,20 @@
 import { prisma } from '../../lib/prisma';
-import { ICourse, ICourseUpdate } from './course.interface';
+import { ICourse, ICourseUpdate, IQuery } from './course.interface';
+import { AppError } from '../../utils/AppError';
+import { Prisma } from '../../../generated/prisma/browser';
+import { is } from 'zod/v4/locales';
 
-
-const createCourse = async (payload:ICourse) => {
-  const {
-  departmentId,
-  code,
-  title,
-  description,
-  credit,
-  } = payload;
+const createCourse = async (payload: ICourse) => {
+  const { departmentId, code, title, description, credit } = payload;
 
   const isExitCourse = await prisma.course.findUnique({
     where: {
-      code:code
+      code: code,
     },
   });
 
   if (isExitCourse) {
-    throw new Error(
-      'this course already created',
-    );
+    throw new AppError(409, 'this course already created');
   }
 
   const result = await prisma.course.create({
@@ -29,39 +23,70 @@ const createCourse = async (payload:ICourse) => {
       code,
       title,
       description,
-      credit
+      credit,
     },
   });
 
   return result;
 };
 
+const getAllCourse = async (query:IQuery) => {
+  const { search, isActive, page = 1, limit = 10 } = query;
+  const active = isActive === 'ACTIVE' ? true : isActive === 'BLOCKED' ? false : undefined;
 
-const getAllCourse = async () => {
+  const limitNumber = Number(limit);
+  const numberPage = Number(page);
+  const skip = (numberPage - 1) * limitNumber;
+
+
+ const where : Prisma.CourseWhereInput={
+   ...(active !== undefined && {
+    isActive:active
+   }),
+   ...(search && {
+    title:{
+      contains:search,
+      mode:'insensitive'
+    }
+   })
+ }
+
   const result = await prisma.course.findMany({
-    where: {
-     isActive: true,
-    },
+    where,
+    skip,
+    take:limitNumber
   });
 
-  return result;
+ const total = await prisma.course.count({
+  where
+ })
+
+   return {
+     data: result,
+     meta: {
+       page: numberPage,
+       limit: limitNumber,
+       total,
+       totalPage: Math.ceil(total / limitNumber),
+     },
+   };
 };
 
 const getSingleCourse = async (id: string) => {
-  const result = await prisma.course.findUnique({
+  const result = await prisma.course.findUniqueOrThrow({
     where: {
-     id:id,
-     isActive: true,
+      id: id,
+      isActive: true,
     },
   });
 
   return result;
 };
 
-const updateCourse = async (payload:ICourseUpdate, id:string) => {
+const updateCourse = async (payload: ICourseUpdate, id: string) => {
   const result = await prisma.course.update({
     where: {
-      id:id,
+      id: id,
     },
     data: {
       ...payload,
@@ -75,5 +100,5 @@ export const courseService = {
   createCourse,
   getAllCourse,
   getSingleCourse,
-  updateCourse
+  updateCourse,
 };

@@ -17,8 +17,8 @@ router.post(
   teacherController.createTeacherProfile
 );
 
-router.get('/', auth(),teacherController.getAllTeacherProfile);
-router.get('/:id', auth(), teacherController.getSingleTeacherProfile);
+router.get('/',auth(),teacherController.getAllTeacherProfile);
+router.get('/:id',auth(),teacherController.getSingleTeacherProfile);
 
 router.patch(
   '/update-won-profile',

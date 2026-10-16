@@ -1,13 +1,20 @@
 export interface ICourse {
   departmentId: string;
-  code:string;
+  code: string;
   title: string;
-  description?: string;
-  credit:number;
+  description: string;
+  credit: number;
 }
 export interface ICourseUpdate {
-  code?:string;
+  code?: string;
   title?: string;
   description?: string;
-  credit?:number;
+  credit?: number;
+}
+
+export interface IQuery {
+  search?: string | undefined;
+  isActive?: string | undefined;
+  page?: number;
+  limit?: number;
 }

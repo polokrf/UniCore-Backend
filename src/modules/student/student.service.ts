@@ -1,15 +1,9 @@
 import { prisma } from '../../lib/prisma';
 import { IStudent, IUpdateProfile } from './student.interface';
+import { AppError } from '../../utils/AppError';
 
-const createStudentProfile = async (payload:IStudent,userId:string) => {
-  const {
-  departmentId,
-  batch,
-  phone,
-  dateOfBirth,
-  gender,
-  address
-  } = payload;
+const createStudentProfile = async (payload: IStudent, userId: string) => {
+  const { departmentId, batch, phone, dateOfBirth, gender, address } = payload;
 
   const isExitApply = await prisma.studentProfile.findUnique({
     where: {
@@ -18,9 +12,41 @@ const createStudentProfile = async (payload:IStudent,userId:string) => {
   });
 
   if (isExitApply) {
-    throw new Error(
+    // a rejected applicant may apply again: reset the same profile to PENDING
+    if (isExitApply.status === 'REJECTED') {
+      const isOtherApply = await prisma.teacherProfile.findUnique({
+        where: { userId },
+      });
+      if (isOtherApply) {
+        throw new AppError(409, 'you already apply for Teacher role');
+      }
+      return prisma.studentProfile.update({
+        where: { userId },
+        data: {
+          departmentId,
+          phone,
+          batch,
+          dateOfBirth: new Date(dateOfBirth),
+          gender,
+          address,
+          status: 'PENDING',
+        },
+      });
+    }
+    throw new AppError(
+      409,
       'you already apply for Student role plz await for approved',
     );
+  }
+
+  const isExitApplyTeacher = await prisma.teacherProfile.findUnique({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (isExitApplyTeacher) {
+    throw new AppError(409, 'you already apply for Teacher role');
   }
 
   const applyStudent = await prisma.studentProfile.create({
@@ -29,21 +55,20 @@ const createStudentProfile = async (payload:IStudent,userId:string) => {
       departmentId,
       phone,
       batch,
-      dateOfBirth:new Date(dateOfBirth),
-     
+      dateOfBirth: new Date(dateOfBirth),
+
       gender,
-     address
+      address,
     },
   });
 
   return applyStudent;
 };
 
-
 const getStudentProfile = async (id: string) => {
-  const result = await prisma.studentProfile.findUnique({
+  const result = await prisma.studentProfile.findUniqueOrThrow({
     where: {
-      userId:id,
+      userId: id,
       status: 'APPROVED',
       isActive: true,
     },
@@ -52,7 +77,21 @@ const getStudentProfile = async (id: string) => {
   return result;
 };
 
-const updateStudentProfile = async (payload:IUpdateProfile, userId: string) => {
+const getSingleStudentProfile = async (id: string) => {
+  const result = await prisma.studentProfile.findUniqueOrThrow({
+    where: {
+      id: id,
+      isActive: true,
+    },
+  });
+
+  return result;
+};
+
+const updateStudentProfile = async (
+  payload: IUpdateProfile,
+  userId: string,
+) => {
   const result = await prisma.studentProfile.update({
     where: {
       userId: userId,
@@ -68,5 +107,6 @@ const updateStudentProfile = async (payload:IUpdateProfile, userId: string) => {
 export const studentService = {
   createStudentProfile,
   getStudentProfile,
-  updateStudentProfile
+  updateStudentProfile,
+  getSingleStudentProfile,
 };

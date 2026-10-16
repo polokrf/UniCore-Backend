@@ -18,6 +18,7 @@ router.post(
 );
 
 router.get('/', auth(Role.STUDENT),enrollmentController.getEnroll);
+router.get('/:id', auth(Role.ADMIN,Role.SUPER_ADMIN),enrollmentController.getSingleEnrollment);
 
 router.patch(
   '/cancel/:id',

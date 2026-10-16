@@ -1,16 +1,14 @@
+import config from '../../config';
+import { prisma } from '../../lib/prisma';
+import { ILogin, IRegister } from './auth.interface';
+import bcrypt from 'bcryptjs';
+import { JwtPayload, SignOptions } from 'jsonwebtoken';
+import { jwtToken } from '../../utils/jwt';
+import { AppError } from '../../utils/AppError';
 
-import config from "../../config"
-import { prisma } from "../../lib/prisma"
-import { ILogin, IRegister } from "./auth.interface"
-import bcrypt from "bcryptjs"
-import { JwtPayload, SignOptions } from "jsonwebtoken"
-import { jwtToken } from "../../utils/jwt"
+const userRegister = async (payload: IRegister) => {
+  const { firstName, email, password } = payload;
 
-
-
-const userRegister = async (payload:IRegister) => {
-  const { firstName, email, password } = payload
-   
   const exitsUser = await prisma.user.findUnique({
     where: {
       email,
@@ -18,25 +16,23 @@ const userRegister = async (payload:IRegister) => {
   });
 
   if (exitsUser && !exitsUser.isActive) {
-    throw new Error('your account has blocked');
+    throw new AppError(403, 'your account has blocked');
   }
 
   if (exitsUser && exitsUser.isEmailVerified) {
-    throw new Error('email already verified');
+    throw new AppError(409, 'email already verified');
   }
 
   const hasPassword = await bcrypt.hash(password, Number(config.password_salt));
 
-
   const insertUser = await prisma.user.create({
     data: {
       firstName: firstName,
-      email:email,
-      password:hasPassword,
+      email: email,
+      password: hasPassword,
       isEmailVerified: true,
     },
   });
-
 
   const user = await prisma.user.findUniqueOrThrow({
     where: {
@@ -67,12 +63,7 @@ const userRegister = async (payload:IRegister) => {
     accessToken,
     refreshToken,
   };
-  
-
- 
-  
-  
-}
+};
 
 // const registerEmailVerify = async (payload:IVerifyEmail) => {
 //   const { email, otp } = payload
@@ -90,7 +81,7 @@ const userRegister = async (payload:IRegister) => {
 //   if (exitsUser && exitsUser.isEmailVerified) {
 //     throw new Error('email already verified');
 //   }
-  
+
 //   const otpKey = `verify-email-otp:${email}`;
 //   const redisOtp = await redisClient.get(otpKey)
 
@@ -109,7 +100,7 @@ const userRegister = async (payload:IRegister) => {
 //   if (!redisPayload) {
 //       throw new Error('user payload missing')
 //   }
-  
+
 //   const userPayload:IRegister = JSON.parse(redisPayload)
 
 //   const insertUser = await prisma.user.create({
@@ -118,19 +109,17 @@ const userRegister = async (payload:IRegister) => {
 //       email: userPayload.email,
 //       password: userPayload.password,
 //       isEmailVerified:true
-      
+
 //     }
 //   })
 
 //   await redisClient.del(userDataKey)
 
-  
-
 //   const ejsFilePath = path.join(process.cwd(),'/src/modules/Template/verify.email.success.ejs', );
 
 //   const html = await ejs.renderFile(ejsFilePath, {
 //     name:insertUser.firstName,
-  
+
 //   });
 
 //   await transporter.sendMail({
@@ -149,7 +138,6 @@ const userRegister = async (payload:IRegister) => {
 //     }
 //   })
 
-
 //   const jwtPayload:JwtPayload = {
 //     userId:user.id,
 //     name: user?.firstName,
@@ -164,8 +152,7 @@ const userRegister = async (payload:IRegister) => {
 //   const refreshToken = jwtToken.singToken(jwtPayload, config.refresh_secret, {
 //     expiresIn: config.refresh_expired,
 //   } as SignOptions);
- 
-  
+
 //   return {
 //     user,
 //     accessToken,
@@ -173,75 +160,97 @@ const userRegister = async (payload:IRegister) => {
 //   }
 // }
 
-
-const userLogin = async (payload:ILogin) => {
+const userLogin = async (payload: ILogin) => {
   const { email, password } = payload;
 
   const user = await prisma.user.findUnique({
     where: {
-      email:email
-    }
-  })
+      email: email,
+    },
+  });
 
   if (!user) {
-    throw new Error('you do not login plz register first')
+    throw new AppError(401, 'you do not login plz register first');
   }
 
   if (!user.isActive) {
-    throw new Error('you are blocked')
+    throw new AppError(403, 'you are blocked');
   }
 
   if (!user.isEmailVerified) {
-    throw new Error('you are not verified user plz verified first')
+    throw new AppError(403, 'you are not verified user plz verified first');
   }
 
-  const userPassword = user.password
-  const comPassword = await bcrypt.compare(password, userPassword)
-  
+  const userPassword = user.password;
+  const comPassword = await bcrypt.compare(password, userPassword);
+
   if (!comPassword) {
-    throw new Error('your password do not match plz give valid password')
+    throw new AppError(
+      401,
+      'your password do not match plz give valid password',
+    );
   }
 
-   const jwtPayload: JwtPayload = {
-     userId: user.id,
-     name: user?.firstName,
-     email: user.email,
-     role: user.role,
-   };
+  const jwtPayload: JwtPayload = {
+    userId: user.id,
+    name: user?.firstName,
+    email: user.email,
+    role: user.role,
+  };
 
-   const accessToken = jwtToken.singToken(jwtPayload, config.access_secret, {
-     expiresIn: config.access_expired,
-   } as SignOptions);
+  const accessToken = jwtToken.singToken(jwtPayload, config.access_secret, {
+    expiresIn: config.access_expired,
+  } as SignOptions);
 
-   const refreshToken = jwtToken.singToken(jwtPayload, config.refresh_secret, {
-     expiresIn: config.refresh_expired,
-   } as SignOptions);
+  const refreshToken = jwtToken.singToken(jwtPayload, config.refresh_secret, {
+    expiresIn: config.refresh_expired,
+  } as SignOptions);
 
-   return {
+  return {
     accessToken,
     refreshToken,
-   };
+  };
+};
 
-
-}
-
-
-const myProfile = async (userId:string) => {
+const myProfile = async (userId: string) => {
   const profile = await prisma.user.findUnique({
     where: {
-      id:userId
+      id: userId,
     },
     omit: {
-      password:true
-    }
-  })
+      password: true,
+    },
+    // the applicant's own application status, so the app can show
+    // pending / approved / rejected after register -> apply
+    include: {
+      studentProfile: {
+        select: {
+          id: true,
+          status: true,
+          batch: true,
+          createdAt: true,
+          department: { select: { name: true, code: true } },
+        },
+      },
+      teacherProfile: {
+        select: {
+          id: true,
+          status: true,
+          designation: true,
+          rejectionReason: true,
+          createdAt: true,
+          department: { select: { name: true, code: true } },
+        },
+      },
+    },
+  });
 
-  return profile
-}
+  return profile;
+};
 
 export const authService = {
   userRegister,
- 
+
   userLogin,
-  myProfile
-}
+  myProfile,
+};

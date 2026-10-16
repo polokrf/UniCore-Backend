@@ -7,7 +7,8 @@ dotenv.config(path.join(process.cwd(), '.env') as DotenvConfigOptions);
 
 
 export default {
-  port: process.env.PORT,
+  port: process.env.PORT!,
+  mode:process.env.MODE!,
   password_salt: process.env.PASSWORD_SALT!,
   access_secret: process.env.ACCESS_SECRET!,
   access_expired: process.env.ACCESS_EXPIRED!,

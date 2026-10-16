@@ -1,20 +1,23 @@
 import { prisma } from '../../lib/prisma';
-import { ISemester, ISemesterUpdate } from './semester.interface';
+import { IQuery, ISemester, ISemesterUpdate } from './semester.interface';
+import { AppError } from '../../utils/AppError';
+import { Prisma } from '../../../generated/prisma/browser';
 
-const createSemester = async (payload:ISemester) => {
-  const { name,year,startDate,endDate } = payload;
+
+const createSemester = async (payload: ISemester) => {
+  const { name, year, startDate, endDate } = payload;
 
   const isExitSemester = await prisma.semester.findUnique({
     where: {
       name_year: {
         name,
-        year
-     }
+        year,
+      },
     },
   });
 
   if (isExitSemester) {
-    throw new Error('this Semester already exists');
+    throw new AppError(409, 'this Semester already exists');
   }
 
   const result = await prisma.semester.create({
@@ -22,28 +25,71 @@ const createSemester = async (payload:ISemester) => {
       name,
       year,
       startDate,
-      endDate
-
+      endDate,
     },
   });
 
   return result;
 };
 
+const getAllSemester = async (query:IQuery) => {
+
+  const {search,isActive,page=1,limit=10}=query
+
+  const active = isActive === 'ACTIVE' ? true :isActive === 'BLOCKED' ? false : undefined
+  const limitNumber = Number(limit)
+  const pageNumber = Number(page)
+  const skip = (pageNumber -1) * limitNumber
+
+  const where: Prisma.SemesterWhereInput = {
+    ...(active !== undefined && {
+      isActive: active,
+    }),
+
+    ...(search && {
+    OR:[
+    {name: {
+        contains: search,
+        mode: 'insensitive',
+     }},
+
+     { year:{
+        equals:Number(search)
+        
+      }
+    }
+    ]
+    })
+    
+  };
 
 
-const getAllSemester = async () => {
   const result = await prisma.semester.findMany({
-    where: {
-      isActive: true,
-    },
+    where,
+    skip,
+    take: limitNumber
   });
 
-  return result;
+  const total =await prisma.semester.count({
+  where
+  }) 
+
+
+
+  return {
+    data: result,
+    meta:{
+      skip:pageNumber,
+      limit:limitNumber,
+      total,
+      totalPage : Math.ceil(total | limitNumber)
+
+    }
+  };
 };
 
 const getSingleSemester = async (id: string) => {
-  const result = await prisma.semester.findUnique({
+  const result = await prisma.semester.findUniqueOrThrow({
     where: {
       id: id,
       isActive: true,
@@ -53,7 +99,7 @@ const getSingleSemester = async (id: string) => {
   return result;
 };
 
-const updateSemester = async (payload:ISemesterUpdate, id: string) => {
+const updateSemester = async (payload: ISemesterUpdate, id: string) => {
   const result = await prisma.semester.update({
     where: {
       id: id,
@@ -70,5 +116,5 @@ export const semesterService = {
   createSemester,
   getAllSemester,
   getSingleSemester,
-  updateSemester
+  updateSemester,
 };

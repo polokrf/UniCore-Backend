@@ -21,7 +21,8 @@ const createCourse = catchAsync(
 
 const getAllCourse = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await courseService.getAllCourse();
+    const query = req.query
+    const result = await courseService.getAllCourse(query);
 
     response(res, {
       status: 200,

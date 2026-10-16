@@ -1,8 +1,19 @@
-import { Prisma } from "../../../generated/prisma/client";
-import { Role, StudentStatus, TeacherStatus } from "../../../generated/prisma/enums";
-import { prisma } from "../../lib/prisma";
-import { IEnrollment, IResult, IStudent, ITeacher, IUser } from "./admin.interface";
-import crypto from 'crypto'
+import { Prisma } from '../../../generated/prisma/client';
+import {
+  Role,
+  StudentStatus,
+  TeacherStatus,
+} from '../../../generated/prisma/enums';
+import { prisma } from '../../lib/prisma';
+import {
+  IEnrollment,
+  IResult,
+  IStudent,
+  ITeacher,
+  IUser,
+} from './admin.interface';
+import crypto from 'crypto';
+import { AppError } from '../../utils/AppError';
 
 const getAllUsers = async (query: IUser) => {
   const {
@@ -15,16 +26,12 @@ const getAllUsers = async (query: IUser) => {
     limit = 10,
   } = query;
 
-  
   const pageNumber = Number(page) || 1;
   const limitNumber = Number(limit) || 10;
   const skip = (pageNumber - 1) * limitNumber;
 
-  
   const isActiveBoolean =
-    isActive !== undefined
-      ? isActive === true || isActive === ('true' as any)
-      : undefined;
+    isActive === 'ACTIVE' ? true : isActive === 'BLOCKED' ? false : undefined;
 
   const where: Prisma.UserWhereInput = {
     ...(role && {
@@ -53,7 +60,6 @@ const getAllUsers = async (query: IUser) => {
     }),
   };
 
-  
   const allowedSortFields = ['createdAt', 'firstName', 'email', 'role'];
   const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
 
@@ -89,7 +95,7 @@ const getAllTeacher = async (query: ITeacher) => {
   const {
     search,
     status,
-    departmentId,
+
     isActive,
     sortBy = 'createdAt',
     sortOrder = 'desc',
@@ -97,12 +103,10 @@ const getAllTeacher = async (query: ITeacher) => {
     limit = 10,
   } = query;
 
- 
   const pageNumber = Number(page) || 1;
   const limitNumber = Number(limit) || 10;
   const skip = (pageNumber - 1) * limitNumber;
 
-  
   const isActiveBoolean =
     isActive !== undefined
       ? isActive === true || (isActive as any) === 'true'
@@ -111,10 +115,6 @@ const getAllTeacher = async (query: ITeacher) => {
   const where: Prisma.TeacherProfileWhereInput = {
     ...(status && {
       status,
-    }),
-
-    ...(departmentId && {
-      departmentId,
     }),
 
     ...(isActiveBoolean !== undefined && {
@@ -155,7 +155,6 @@ const getAllTeacher = async (query: ITeacher) => {
     }),
   };
 
-  
   const allowedSortFields = ['createdAt', 'employeeId', 'designation'];
   const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
   const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
@@ -175,7 +174,7 @@ const getAllTeacher = async (query: ITeacher) => {
         [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limitNumber, 
+      take: limitNumber,
     }),
 
     prisma.teacherProfile.count({
@@ -198,7 +197,7 @@ const getAllStudent = async (query: IStudent) => {
   const {
     search,
     status,
-    departmentId,
+
     batch,
     semester,
     isActive,
@@ -208,18 +207,15 @@ const getAllStudent = async (query: IStudent) => {
     limit = 10,
   } = query;
 
- 
   const pageNumber = Number(page) || 1;
   const limitNumber = Number(limit) || 10;
   const skip = (pageNumber - 1) * limitNumber;
 
-  
   const isActiveBoolean =
     isActive !== undefined
       ? isActive === true || (isActive as any) === 'true'
       : undefined;
 
-  
   const batchNumber =
     batch !== undefined && batch !== null && batch !== ('' as any)
       ? Number(batch)
@@ -233,10 +229,6 @@ const getAllStudent = async (query: IStudent) => {
   const where: Prisma.StudentProfileWhereInput = {
     ...(status && {
       status,
-    }),
-
-    ...(departmentId && {
-      departmentId,
     }),
 
     ...(batchNumber !== undefined &&
@@ -287,7 +279,6 @@ const getAllStudent = async (query: IStudent) => {
     }),
   };
 
-  
   const allowedSortFields = ['createdAt', 'batch', 'semester', 'studentId'];
   const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
   const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
@@ -303,7 +294,7 @@ const getAllStudent = async (query: IStudent) => {
         [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limitNumber, 
+      take: limitNumber,
     }),
 
     prisma.studentProfile.count({
@@ -326,17 +317,13 @@ const getAllEnrolment = async (query: IEnrollment) => {
   const {
     search,
     status,
-    courseOfferingId,
-    semesterId,
-    courseId,
-    studentId,
+
     sortBy = 'createdAt',
     sortOrder = 'desc',
     page = 1,
     limit = 10,
   } = query;
 
- 
   const pageNumber = Number(page) || 1;
   const limitNumber = Number(limit) || 10;
   const skip = (pageNumber - 1) * limitNumber;
@@ -344,26 +331,6 @@ const getAllEnrolment = async (query: IEnrollment) => {
   const where: Prisma.EnrollmentWhereInput = {
     ...(status && {
       status,
-    }),
-
-    ...(courseOfferingId && {
-      courseOfferingId,
-    }),
-
-    ...(studentId && {
-      studentId,
-    }),
-
-    ...(semesterId && {
-      courseOffering: {
-        semesterId,
-      },
-    }),
-
-    ...(courseId && {
-      courseOffering: {
-        courseId,
-      },
     }),
 
     ...(search && {
@@ -420,7 +387,6 @@ const getAllEnrolment = async (query: IEnrollment) => {
     }),
   };
 
- 
   const allowedSortFields = ['createdAt', 'status'];
   const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
   const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
@@ -451,12 +417,13 @@ const getAllEnrolment = async (query: IEnrollment) => {
           },
         },
         payments: true,
+        result: true,
       },
       orderBy: {
         [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limitNumber, // 
+      take: limitNumber, //
     }),
 
     prisma.enrollment.count({
@@ -478,10 +445,6 @@ const getAllEnrolment = async (query: IEnrollment) => {
 const getAllResult = async (query: IResult) => {
   const {
     search,
-    grade,
-    semesterId,
-    courseId,
-    departmentId,
     published,
     sortBy = 'createdAt',
     sortOrder = 'desc',
@@ -489,50 +452,21 @@ const getAllResult = async (query: IResult) => {
     limit = 10,
   } = query;
 
- 
   const pageNumber = Number(page) || 1;
   const limitNumber = Number(limit) || 10;
   const skip = (pageNumber - 1) * limitNumber;
 
-  
   const publishedBoolean =
-    published !== undefined
-      ? published === true || (published as any) === 'true'
-      : undefined;
+    published === 'Active'
+      ? true
+      : published === 'InActive'
+        ? false
+        : undefined;
 
   const where: Prisma.ResultWhereInput = {
-    ...(grade && {
-      grade,
-    }),
-
     ...(publishedBoolean !== undefined && {
       published: publishedBoolean,
     }),
-
-    ...(departmentId || semesterId || courseId
-      ? {
-          enrollment: {
-            ...(departmentId && {
-              student: {
-                departmentId,
-              },
-            }),
-
-            ...(semesterId || courseId
-              ? {
-                  courseOffering: {
-                    ...(semesterId && {
-                      semesterId,
-                    }),
-                    ...(courseId && {
-                      courseId,
-                    }),
-                  },
-                }
-              : {}),
-          },
-        }
-      : {}),
 
     ...(search && {
       OR: [
@@ -570,35 +504,10 @@ const getAllResult = async (query: IResult) => {
             },
           },
         },
-        {
-          enrollment: {
-            courseOffering: {
-              course: {
-                code: {
-                  contains: search,
-                  mode: 'insensitive',
-                },
-              },
-            },
-          },
-        },
-        {
-          enrollment: {
-            courseOffering: {
-              course: {
-                title: {
-                  contains: search,
-                  mode: 'insensitive',
-                },
-              },
-            },
-          },
-        },
       ],
     }),
   };
 
-  
   const allowedSortFields = ['createdAt', 'marks', 'grade'];
   const safeSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
   const safeSortOrder = sortOrder === 'asc' ? 'asc' : 'desc';
@@ -609,23 +518,12 @@ const getAllResult = async (query: IResult) => {
       include: {
         enrollment: {
           include: {
+            courseOffering: { include: { course: true, semester: true } },
             student: {
               include: {
                 user: {
                   omit: {
                     password: true,
-                  },
-                },
-                department: true,
-              },
-            },
-            courseOffering: {
-              include: {
-                course: true,
-                semester: true,
-                teacher: {
-                  include: {
-                    user: true,
                   },
                 },
               },
@@ -637,7 +535,7 @@ const getAllResult = async (query: IResult) => {
         [safeSortBy]: safeSortOrder,
       },
       skip,
-      take: limitNumber, 
+      take: limitNumber,
     }),
 
     prisma.result.count({
@@ -664,44 +562,46 @@ const updateTeacherStatus = async (id: string, status: TeacherStatus) => {
   });
 
   if (teacher.status === status) {
-    throw new Error(`Teacher is already ${status}`);
+    throw new AppError(409, `Teacher is already ${status}`);
   }
 
-  const result = await prisma.$transaction(async tx => {
-    
-    const updatedTeacher = await tx.teacherProfile.update({
-      where: {
-        id,
-      },
-      data: {
-        status,
-      },
-    });
+  const employeeId =
+    status === 'APPROVED'
+      ? crypto.randomInt(100000, 1000000).toString()
+      : undefined;
 
-    if (status === 'APPROVED') {
-      const employeeId = crypto.randomInt(100000,1000000).toString()
-      await tx.user.update({
+  const result = await prisma.$transaction(
+    async tx => {
+      const updatedTeacher = await tx.teacherProfile.update({
         where: {
-          id: teacher.userId,
-          
+          id,
         },
         data: {
-          role: 'TEACHER',
+          status,
+          ...(employeeId && {
+            employeeId,
+          }),
         },
       });
 
-      await tx.teacherProfile.update({
-        where: {
-          id:updatedTeacher.id
-        },
-        data: {
-          employeeId:employeeId
-        }
-      })
-    }
+      if (status === 'APPROVED') {
+        await tx.user.update({
+          where: {
+            id: teacher.userId,
+          },
+          data: {
+            role: 'TEACHER',
+          },
+        });
+      }
 
-    return updatedTeacher;
-  });
+      return updatedTeacher;
+    },
+    {
+      maxWait: 10000,
+      timeout: 10000,
+    },
+  );
 
   return result;
 };
@@ -714,7 +614,7 @@ const updateStudentStatus = async (id: string, status: StudentStatus) => {
   });
 
   if (student.status === status) {
-    throw new Error(`Student is already ${status}`);
+    throw new AppError(409, `Student is already ${status}`);
   }
 
   const result = await prisma.$transaction(async tx => {
@@ -754,6 +654,5 @@ export const adminService = {
   getAllTeacher,
   getAllResult,
   updateTeacherStatus,
-  updateStudentStatus
-  
+  updateStudentStatus,
 };

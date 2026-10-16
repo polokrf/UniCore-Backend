@@ -23,6 +23,7 @@ const checkoutPayment = catchAsync(async (req: Request, res: Response, next: Nex
 
 
 const checkoutCallBack = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.query)
   const { redirectUrl } = await paymentService.checkoutCallBack(req.query)
   
   res.redirect(redirectUrl)

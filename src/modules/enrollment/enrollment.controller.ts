@@ -33,6 +33,20 @@ const getEnroll = catchAsync(
   },
 );
 
+const getSingleEnrollment = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+   const id = req.params.id
+    const result = await enrollmentService.getSingleEnrollment(id as string);
+
+    response(res, {
+      status: 200,
+      success: true,
+      message: 'My Enrollment retrieve successfully',
+      data: result,
+    });
+  },
+);
+
 
 const cancelEnroll = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -56,5 +70,6 @@ const cancelEnroll = catchAsync(
 export const enrollmentController = {
   enrollNow,
   getEnroll,
-  cancelEnroll
+  cancelEnroll,
+  getSingleEnrollment
 };

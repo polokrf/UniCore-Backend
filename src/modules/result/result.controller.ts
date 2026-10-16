@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import catchAsync from "../../utils/catchAsync";
-import { resultService } from "./result.service";
-import response from "../../utils/clientResponse";
-import { RequestUser } from "../../middleWear/auth";
+import { Request, Response } from 'express';
+import catchAsync from '../../utils/catchAsync';
+import { resultService } from './result.service';
+import response from '../../utils/clientResponse';
+import { RequestUser } from '../../middleWear/auth';
 
-const createResult = catchAsync(async (req:Request, res:Response) => {
+const createResult = catchAsync(async (req: Request, res: Response) => {
   const result = await resultService.createResult(req.body);
 
   response(res, {
@@ -13,33 +13,51 @@ const createResult = catchAsync(async (req:Request, res:Response) => {
     message: 'result create successfully',
     data: result,
   });
-})
+});
 const getResult = catchAsync(async (req: Request, res: Response) => {
-  const id =req.user?.userId
-   const result = await resultService.getResult(id as string);
+  const id = req.user?.userId;
+  const result = await resultService.getResult(id as string);
 
-   response(res, {
-     status: 200,
-     success: true,
-     message: 'result get successfully',
-     data: result,
-   });
-})
+  response(res, {
+    status: 200,
+    success: true,
+    message: 'result get successfully',
+    data: result,
+  });
+});
 const getSingleResult = catchAsync(async (req: Request, res: Response) => {
- const id = req.params.id
-  
-   const result = await resultService.getSingleResult( id as string ,req.user as RequestUser);
+  const id = req.params.id;
 
-   response(res, {
-     status: 200,
-     success: true,
-     message: 'result get successfully',
-     data: result,
-   });
-})
+  const result = await resultService.getSingleResult(
+    id as string,
+    req.user as RequestUser,
+  );
+
+  response(res, {
+    status: 200,
+    success: true,
+    message: 'result get successfully',
+    data: result,
+  });
+});
+
+const updateResult = catchAsync(async (req: Request, res: Response) => {
+  const result = await resultService.updateResult(
+    req.params.id as string,
+    req.body,
+  );
+
+  response(res, {
+    status: 200,
+    success: true,
+    message: 'result update successfully',
+    data: result,
+  });
+});
 
 export const resultController = {
   createResult,
+  updateResult,
   getResult,
-  getSingleResult
-}
+  getSingleResult,
+};

@@ -2,21 +2,22 @@ import { NextFunction, Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 import { authService } from "./auth.service";
 import response from "../../utils/clientResponse";
+import config from "../../config";
 
 const userRegister = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
    const {user,accessToken,refreshToken}= await authService.userRegister(req.body)
 
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' :'none',
     maxAge: 1000 * 60 * 60 * 1,
   });
 
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
     maxAge: 1000 * 60 * 60 * 7,
   });
 
@@ -72,15 +73,15 @@ const userLogin = catchAsync(async (req:Request, res:Response, next:NextFunction
 
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
     maxAge: 1000 * 60 * 60 * 1,
   });
 
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
     maxAge: 1000 * 60 * 60 * 7,
   });
 
@@ -100,20 +101,16 @@ const userLogin = catchAsync(async (req:Request, res:Response, next:NextFunction
 const logOut = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
   
   res.clearCookie('accessToken', {
-    
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
-  
-  })
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
+  });
 
   res.clearCookie('refreshToken', {
-    
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
-  
-  })
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
+  });
 
   response(res, {
     status: 200,

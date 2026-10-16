@@ -14,9 +14,21 @@ const updateUserPhoto = catchAsync(async (req: Request, res: Response, next: Nex
     data:result
   })
 })
+const updateUserStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const id= req.params.id
+  const result = await userService.updateUserStatus(req.body, id as string)
+  
+  response(res, {
+    status: 200,
+    success: true,
+    message: `user is ${req.body?.status} SuccessFully`,
+    data:result
+  })
+})
 
 
 
 export const userController = {
-  updateUserPhoto
+  updateUserPhoto,
+  updateUserStatus
 }

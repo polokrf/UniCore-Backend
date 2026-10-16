@@ -1,27 +1,28 @@
-import { prisma } from "../../lib/prisma";
-import { RequestUser } from "../../middleWear/auth";
-import { IResult } from "./result.interface";
+import { prisma } from '../../lib/prisma';
+import { RequestUser } from '../../middleWear/auth';
+import { IResult, IResultUpdate } from './result.interface';
+import { AppError } from '../../utils/AppError';
 
 const createResult = async (payload: IResult) => {
-  const {enrollmentId,grade,gradePoint,marks}= payload
+  const { enrollmentId, grade, gradePoint, marks } = payload;
   const isEnrolment = await prisma.enrollment.findUniqueOrThrow({
     where: {
-       id:enrollmentId
-     }
-  })
-  
+      id: enrollmentId,
+    },
+  });
+
   if (isEnrolment.status !== 'CONFIRMED') {
-    throw new Error('plz course enrol first')
+    throw new AppError(409, 'plz course enrol first');
   }
 
   const isResult = await prisma.result.findUnique({
     where: {
-      enrollmentId
-    }
-  })
+      enrollmentId,
+    },
+  });
 
   if (isResult) {
-    throw new Error('this result already exits')
+    throw new AppError(409, 'this result already exits');
   }
 
   const result = await prisma.result.create({
@@ -29,25 +30,23 @@ const createResult = async (payload: IResult) => {
       enrollmentId,
       grade,
       gradePoint,
-      marks
-    }
-  })
+      marks,
+    },
+  });
 
-  return result
+  return result;
 };
 
-const getResult = async (userId:string) => {
+const getResult = async (userId: string) => {
   const isStudent = await prisma.studentProfile.findUniqueOrThrow({
     where: {
-     userId:userId
-   }
-  }) 
-  
+      userId: userId,
+    },
+  });
+
   if (!isStudent.isActive || isStudent.status !== 'APPROVED') {
-    throw new Error('this student inActive or not approve')
+    throw new AppError(403, 'this student inActive or not approve');
   }
-
-
 
   const results = await prisma.result.findMany({
     where: {
@@ -58,37 +57,45 @@ const getResult = async (userId:string) => {
     },
   });
 
-  return results
-
-
+  return results;
 };
 
 const getSingleResult = async (id: string, user: RequestUser) => {
-   const isStudent = await prisma.studentProfile.findUniqueOrThrow({
-     where: {
-       userId:user.userId,
-     },
-   });
+  const isStudent = await prisma.studentProfile.findUniqueOrThrow({
+    where: {
+      userId: user.userId,
+    },
+  });
 
-   if (!isStudent.isActive || isStudent.status !== 'APPROVED') {
-     throw new Error('this student inActive or not approve');
-   }
+  if (!isStudent.isActive || isStudent.status !== 'APPROVED') {
+    throw new AppError(403, 'this student inActive or not approve');
+  }
 
-   const result = await prisma.result.findFirstOrThrow({
-     where: {
-       id,
-       published: true,
-       enrollment: {
-         studentId: isStudent.id,
-       },
-     },
-   });
-  
-  return result
+  const result = await prisma.result.findFirstOrThrow({
+    where: {
+      id,
+      published: true,
+      enrollment: {
+        studentId: isStudent.id,
+      },
+    },
+  });
+
+  return result;
+};
+
+// admin: correct marks / grade, or publish / unpublish. An unpublished result
+// disappears from the student's own results. Unknown id -> 404 (Prisma P2025).
+const updateResult = async (id: string, payload: IResultUpdate) => {
+  return prisma.result.update({
+    where: { id },
+    data: payload,
+  });
 };
 
 export const resultService = {
   createResult,
+  updateResult,
   getResult,
   getSingleResult,
 };

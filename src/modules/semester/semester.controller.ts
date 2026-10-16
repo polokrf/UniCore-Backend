@@ -20,7 +20,8 @@ const createSemester = catchAsync(
 
 const getAllSemester = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await semesterService.getAllSemester();
+    const query= req.query
+    const result = await semesterService.getAllSemester(query);
 
     response(res, {
       status: 200,
