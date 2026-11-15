@@ -1,0 +1,99 @@
+services:
+  uni-db:
+    image: postgres:16-alpine
+    container_name: unicoreDB
+
+    networks:
+      - unicore-net
+
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres1234
+      - POSTGRES_DB=unicore-db
+
+    volumes:
+      - unicore-data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d unicore-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  unicore_server:
+    container_name: unicore_server
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    depends_on:
+      uni-db:
+        condition: service_healthy
+
+    networks:
+      - unicore-net
+
+    env_file:
+      - .env
+
+    environment:
+      CHOKIDAR_USEPOLLING: "1"
+      CHOKIDAR_INTERVAL: "300"
+
+    ports:
+      - "5000:5000"
+
+    working_dir: /app
+
+    volumes:
+      - /app
+      - server-node-modules:/app/node_modules
+
+    command: sh -lc "CI=true npm install && npx prisma generate && npx prisma migrate deploy && npm run dev"
+
+  unicore_client:
+    container_name: unicore_client
+
+    build:
+      context: ../unicore-client/unicore-client
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    depends_on:
+      - unicore_server
+
+    networks:
+      - unicore-net
+
+    env_file:
+      - ../unicore-client/unicore-client/.env
+
+    environment:
+      CHOKIDAR_USEPOLLING: "1"
+      CHOKIDAR_INTERVAL: "300"
+      WATCHPACK_POLLING: "true"
+
+    ports:
+      - "3000:3000"
+
+    working_dir: /app
+
+    volumes:
+      - ../unicore-client/unicore-client:/app
+      - client-node-modules:/app/node_modules
+
+    command: sh -lc "CI=true npm install && npm run dev -- --webpack -H 0.0.0.0 -p 3000"
+
+networks:
+  unicore-net:
+    driver: bridge
+
+volumes:
+  unicore-data:
+  server-node-modules:
+  client-node-modules:

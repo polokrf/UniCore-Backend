@@ -11,7 +11,8 @@
     "biome:check": "npx @biomejs/biome format ./src",
     "biome:fix": "npx @biomejs/biome format --write ./src",
     "lint:check": "npx @biomejs/biome lint ./src",
-    "lint:fix": "npx @biomejs/biome lint --write ./src"
+    "lint:fix": "npx @biomejs/biome lint --write ./src",
+    "migrate": "prisma migrate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
