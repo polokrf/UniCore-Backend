@@ -21,18 +21,16 @@ const registerEmailVerify = catchAsync(async (req: Request, res: Response, next:
   // console.log(accessToken,refreshToken,'accessToken','refreshToken')
   
   res.cookie('accessToken', accessToken, {
-     
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
     maxAge: 1000 * 60 * 60 * 1,
-      
-  })
+  });
 
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'none',
+    secure: config.mode === 'development' ? false : true,
+    sameSite: config.mode === 'development' ? 'lax' : 'none',
     maxAge: 1000 * 60 * 60 * 7,
   });
   

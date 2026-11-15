@@ -34,7 +34,7 @@ const userRegister = async (payload: IRegister) => {
   const userData = {
     firstName,
     email,
-    hasPassword
+    password:hasPassword
   }
 
   const dataKey= `register-user-payload:${email}`
@@ -100,6 +100,7 @@ const registerEmailVerify = async (payload:IVerifyEmail) => {
 
   const otpKey = `verify-email-otp:${email}`;
   const redisOtp = await redisClient.get(otpKey)
+  // console.log(redisOtp,'registerOtp')
 
   if (!redisOtp) {
     throw new Error('redis otp is missing')
