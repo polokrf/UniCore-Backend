@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import { authService } from "./auth.service";
 import response from "../../utils/clientResponse";
 import config from "../../config";
+import { assert } from "node:console";
 
 const userRegister = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
    await authService.userRegister(req.body)
@@ -46,6 +47,18 @@ const registerEmailVerify = catchAsync(async (req: Request, res: Response, next:
   });
 
 });
+
+
+const reSendOtp = catchAsync(async(req:Request, res:Response, next:NextFunction)=>{
+  await authService.reSendOtp(req.body.email)
+
+  response(res, {
+    status: 200,
+    success: true,
+    message: 'ReSend Register otp plz check your email',
+    data: null
+  });
+})
 
 
 const userLogin = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
@@ -122,7 +135,8 @@ export const authController = {
   userLogin,
   logOut,
   myProfile,
-  registerEmailVerify
+  registerEmailVerify,
+  reSendOtp
 }
 
 

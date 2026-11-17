@@ -10,6 +10,7 @@ import path from 'path';
 import ejs from 'ejs'
 import transporter from '../../lib/nodemialer';
 import crypto from 'crypto'
+import { error } from 'console';
 
 
 const userRegister = async (payload: IRegister) => {
@@ -42,7 +43,7 @@ const userRegister = async (payload: IRegister) => {
     {
       expiration:{
         type:"EX",
-        value:300
+        value:600
       }
     }
   )
@@ -177,6 +178,58 @@ const registerEmailVerify = async (payload:IVerifyEmail) => {
   }
 }
 
+
+const reSendOtp = async(email:string)=>{
+
+  const dataKey = `register-user-payload:${email}`;
+
+  const userData = await redisClient.get(dataKey)
+  if(!userData){
+    throw new Error('user data time expire plz register agin')
+  }
+
+  const redisUserData = JSON.parse(userData)
+
+  
+
+ const otp = crypto.randomInt(100000, 1000000);
+
+ const otpKey = `verify-email-otp:${email}`;
+
+ const oldOtp = await redisClient.get(otpKey)
+
+  if(oldOtp){
+  await redisClient.del(otpKey)
+  }
+
+
+ const setOtp = await redisClient.set(otpKey, otp, {
+   expiration: {
+     type: 'EX',
+     value: 300,
+   },
+ });
+
+ const ejsFilePath = path.join(
+   process.cwd(),
+   '/src/modules/Template/register.send.otp.ejs',
+ );
+
+ const html = await ejs.renderFile(ejsFilePath, {
+   name: redisUserData?.firstName,
+   otp,
+ });
+
+ await transporter.sendMail({
+   sender: config.sender_email,
+   to: email,
+   subject: 'Send Register OTP',
+   html: html,
+ });
+
+ return null;
+}
+
 const userLogin = async (payload: ILogin) => {
   const { email, password } = payload;
 
@@ -267,7 +320,7 @@ const myProfile = async (userId: string) => {
 
 export const authService = {
   userRegister,
-  
+  reSendOtp,
   registerEmailVerify,
   userLogin,
   myProfile,
