@@ -43,7 +43,7 @@ const userRegister = async (payload: IRegister) => {
     {
       expiration:{
         type:"EX",
-        value:600
+        value:800
       }
     }
   )

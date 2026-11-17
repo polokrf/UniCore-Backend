@@ -11,6 +11,10 @@ export const verifyEmailPayload = z.object({
   email: z.email('plz only provide email'),
   otp:z.string().max(6,'plz give valid 6 digit opt number')
 });
+export const ResendOtpPayload = z.object({
+  email: z.email('plz only provide email'),
+  
+});
 
 export const loginPayload = z.object({
   email: z.email('plz provide valid email'),
