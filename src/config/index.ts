@@ -8,7 +8,7 @@ dotenv.config(path.join(process.cwd(), '.env') as DotenvConfigOptions);
 
 export default {
   port: process.env.PORT!,
-  mode:process.env.MODE!,
+  mode: process.env.MODE!,
   password_salt: process.env.PASSWORD_SALT!,
   access_secret: process.env.ACCESS_SECRET!,
   access_expired: process.env.ACCESS_EXPIRED!,
@@ -31,4 +31,8 @@ export default {
   bkash_base_url: process.env.BKASH_BASE_URL!,
   call_back_url: process.env.CALLBACK_URL!,
   app_url: process.env.APP_URL!,
+  openRouter_api_key: process.env.OPEN_API_KEY!,
+  openRouter_chat_model: process.env.OPENROUTER_CHAT_MODEL!,
+  openRouter_fallback_chat_models: process.env.OPENROUTER_FALLBACK_CHAT_MODELS!,
+  openRouter_embedding_chat_model: process.env.OPENROUTER_EMBEDDING_MODEL!,
 };
