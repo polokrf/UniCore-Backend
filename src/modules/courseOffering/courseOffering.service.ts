@@ -7,6 +7,7 @@ import {
 import { AppError } from '../../utils/AppError';
 import { Prisma } from '../../../generated/prisma/client';
 import { RequestUser } from '../../middleWear/auth';
+import { upsertCourseEmbedding } from '../chat/chat.indexing';
 
 // Shared by create and assign: the teacher rules live in ONE place.
 type TeacherDb = Pick<
@@ -130,7 +131,7 @@ const createCourseOffering = async (payload: ICourseOffering) => {
       await assertTeacherEligible(tx, teacher, isCourse.departmentId);
     }
 
-    return tx.courseOffering.create({
+   const result = await tx.courseOffering.create({
       data: {
         courseId,
         semesterId,
@@ -141,6 +142,10 @@ const createCourseOffering = async (payload: ICourseOffering) => {
       },
       include: offeringWithTeacher,
     });
+
+    syncCourseEmbedding(result?.id)
+
+    return result 
   });
 };
 
@@ -177,7 +182,8 @@ const updateCourseOffering = async (payload: IUpdateOffer, id: string) => {
       ...payload,
     },
   });
-
+  
+  syncCourseEmbedding(result.id)
   return result;
 };
 
@@ -217,11 +223,14 @@ const assignCourseOfferingTeacher = async (
     id,
   );
 
-  return prisma.courseOffering.update({
+ const result = await prisma.courseOffering.update({
     where: { id },
     data: { teacherId: teacher.id },
     include: offeringWithTeacher,
   });
+
+  syncCourseEmbedding(result.id)
+  return result
 };
 
 // Class roster of one offering.
@@ -335,6 +344,12 @@ const getRoster = async (id: string, user: RequestUser, query: RosterQuery) => {
     meta: { page, limit, total, totalPage: Math.ceil(total / limit) },
   };
 };
+
+
+
+const syncCourseEmbedding =(courseOfferingId:string)=>{
+  upsertCourseEmbedding(courseOfferingId).catch(error=> console.error("chat : failed to in courseOffering",error))
+}
 
 export const courseOfferingService = {
   createCourseOffering,

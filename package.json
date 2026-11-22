@@ -8,6 +8,7 @@
     "contract:emit": "prisma contract emit",
     "dev": "tsx watch src/server.ts",
     "build": "tsup src/server.ts --format esm",
+    "test:openRouter": "tsx src/script/testOpenRouter.ts",
     "biome:check": "npx @biomejs/biome format ./src",
     "biome:fix": "npx @biomejs/biome format --write ./src",
     "lint:check": "npx @biomejs/biome lint ./src",
@@ -17,6 +18,7 @@
   "dependencies": {
     "@langchain/core": "^1.4.1",
     "@langchain/openai": "^1.5.8",
+    "@langchain/pgvector": "^0.1.0",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "bcryptjs": "^3.0.3",
@@ -29,6 +31,7 @@
     "jsonwebtoken": "^9.0.3",
     "langchain": "^1.6.6",
     "multer": "^2.3.0",
+    "node-cron": "^4.6.0",
     "nodemailer": "^9.1.1",
     "pg": "^8.23.0",
     "prisma": "^7.10.0",

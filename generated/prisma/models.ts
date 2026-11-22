@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/UnicoreEmbedding'
 export type * from './models/ClassRoutine'
 export type * from './models/Course'
 export type * from './models/CourseOffering'

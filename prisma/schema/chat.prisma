@@ -1,9 +1,9 @@
-model UncoreEmbedding {
-  id String  @id @default(dbgenerated("gen_random_uuid()"))
+model UnicoreEmbedding {
+  id String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   content String?
   metadata Json?
   embedding Unsupported("vector")
 
-  @@map("uncore_embedding")
+  @@map("unicore_embedding")
 
 }

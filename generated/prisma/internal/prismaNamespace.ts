@@ -397,6 +397,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  UnicoreEmbedding: 'UnicoreEmbedding',
   ClassRoutine: 'ClassRoutine',
   Course: 'Course',
   CourseOffering: 'CourseOffering',
@@ -423,10 +424,68 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "classRoutine" | "course" | "courseOffering" | "department" | "enrollment" | "payment" | "result" | "semester" | "studentProfile" | "teacherProfile" | "user"
+    modelProps: "unicoreEmbedding" | "classRoutine" | "course" | "courseOffering" | "department" | "enrollment" | "payment" | "result" | "semester" | "studentProfile" | "teacherProfile" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    UnicoreEmbedding: {
+      payload: Prisma.$UnicoreEmbeddingPayload<ExtArgs>
+      fields: Prisma.UnicoreEmbeddingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UnicoreEmbeddingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UnicoreEmbeddingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload>
+        }
+        findFirst: {
+          args: Prisma.UnicoreEmbeddingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UnicoreEmbeddingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload>
+        }
+        findMany: {
+          args: Prisma.UnicoreEmbeddingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload>[]
+        }
+        delete: {
+          args: Prisma.UnicoreEmbeddingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload>
+        }
+        update: {
+          args: Prisma.UnicoreEmbeddingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload>
+        }
+        deleteMany: {
+          args: Prisma.UnicoreEmbeddingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UnicoreEmbeddingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UnicoreEmbeddingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UnicoreEmbeddingPayload>[]
+        }
+        aggregate: {
+          args: Prisma.UnicoreEmbeddingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUnicoreEmbedding>
+        }
+        groupBy: {
+          args: Prisma.UnicoreEmbeddingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UnicoreEmbeddingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UnicoreEmbeddingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UnicoreEmbeddingCountAggregateOutputType> | number
+        }
+      }
+    }
     ClassRoutine: {
       payload: Prisma.$ClassRoutinePayload<ExtArgs>
       fields: Prisma.ClassRoutineFieldRefs
@@ -1280,6 +1339,15 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const UnicoreEmbeddingScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  metadata: 'metadata'
+} as const
+
+export type UnicoreEmbeddingScalarFieldEnum = (typeof UnicoreEmbeddingScalarFieldEnum)[keyof typeof UnicoreEmbeddingScalarFieldEnum]
+
+
 export const ClassRoutineScalarFieldEnum = {
   id: 'id',
   courseOfferingId: 'courseOfferingId',
@@ -1482,14 +1550,6 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
 export const JsonNullValueFilter = {
   DbNull: DbNull,
   JsonNull: JsonNull,
@@ -1497,6 +1557,14 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1516,6 +1584,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1635,20 +1717,6 @@ export type EnumPaymentGatewayFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'PaymentGateway[]'
  */
 export type ListEnumPaymentGatewayFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentGateway[]'>
-    
-
-
-/**
- * Reference to a field of type 'Json'
- */
-export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-/**
- * Reference to a field of type 'QueryMode'
- */
-export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -1858,6 +1926,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  unicoreEmbedding?: Prisma.UnicoreEmbeddingOmit
   classRoutine?: Prisma.ClassRoutineOmit
   course?: Prisma.CourseOmit
   courseOffering?: Prisma.CourseOfferingOmit
