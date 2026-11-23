@@ -20,7 +20,7 @@
       "correctness": {
         "noUnusedFunctionParameters": "off",
         "noUnusedVariables": "off",
-        "noUnusedImports": "off"
+        "noUnusedImports": "off",
       },
       "suspicious": {
         "noExplicitAny": "warn"
@@ -30,6 +30,7 @@
         "noNonNullAssertion": "info"
       }
     }
+    
   },
   "javascript": {
     "formatter": {

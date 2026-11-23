@@ -51,19 +51,34 @@ const condenseQuestionChain = ChatPromptTemplate.fromMessages([
 const answerChain = ChatPromptTemplate.fromMessages([
   ['system', CHAT_SYSTEM_PROMPT],
   new MessagesPlaceholder('history'),
-  ['human', '{question}'],
+  [
+    'human',
+    `
+    ## Retrieved Course Context
+
+    {context}
+
+    ## Current User Question
+
+    {question}
+  `,
+  ],
 ])
   .pipe(chatModal)
   .pipe(new StringOutputParser());
 
-const retrieveCourseIds = async (searchQuery: string) => {
-  const results = await vectorStore.similaritySearchWithScore(
-    searchQuery,
-    TOP_K_COURSES,
-  );
 
-  return results.map(([document]) => document.metadata.courseId as string);
-};
+  const retrieveCourseIds = async (searchQuery: string) => {
+    const results = await vectorStore.similaritySearchWithScore(
+      searchQuery,
+      TOP_K_COURSES,
+    );
+
+    return results.map(
+      ([document]) => document.metadata.courseOfferingId as string,
+    );
+  };
+
 
 const getCourseOfferingWithTeacherAndCourse = async (courseIds: string[]) => {
   if (!courseIds.length) {
@@ -109,6 +124,7 @@ const getCourseOfferingWithTeacherAndCourse = async (courseIds: string[]) => {
       },
       course: {
         select:{
+          code:true,
           title:true,
           description:true,
           
@@ -133,10 +149,37 @@ type TChatCourse = Awaited<
 
 const buildContext = (courses: TChatCourse[]) => {
   if (!courses.length) {
-    return 'no matching course were found';
+    return 'No matching course information was found.';
   }
 
-  return courses;
+  return courses
+    .map(
+      (course, index) => `
+    Course ${index + 1}:
+
+    Course Code: ${course.course.code},
+
+    Course Title: ${course.course.title}
+    Department: ${course.course.department.name}
+    Department Description: ${course.course.department.description ?? 'N/A'}
+
+    Course Description: ${course.course.description ?? 'N/A'}
+
+    Course Fee: ${course.fee ?? 'N/A'}
+    Section: ${course.section}
+    Capacity: ${course.capacity}
+
+    Semester: ${course.semester.name}
+    Semester Year: ${course.semester.year}
+
+    Teacher Name: ${course.teacher?.user.firstName ?? 'Not Assigned'}
+    Teacher Qualification: ${course.teacher?.qualification ?? 'N/A'}
+    Teacher Specialization: ${course.teacher?.specialization ?? 'N/A'}
+    Teacher Bio: ${course.teacher?.bio ?? 'N/A'}
+
+  `,
+    )
+    .join('\n\n');
 };
 
 const sendMessage = async(payload:ISendChatMessagePayload):Promise<IChatResponse> =>{

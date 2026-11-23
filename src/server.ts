@@ -6,6 +6,7 @@ import { deleteUnActiveCourseOfferingAndTeacher, reindexCourseOfferingEmbedding 
 import transporter from "./lib/nodemialer"
 import { prisma } from "./lib/prisma"
 import redisClient from "./lib/redis"
+import { seedDatabase } from "./lib/seed"
 import { reindexAllCourseOffering } from "./modules/chat/chat.indexing"
 
 
@@ -16,7 +17,11 @@ const server = async () => {
     await redisClient.connect()
     console.log('redis is connect')
    
-   
+   if(process.env.RUN_SEED === 'true'){
+    await seedDatabase()
+    console.log('seedData is crate')
+   }
+
     // await deleteUnActiveCourseOfferingAndTeacher()
     await reindexCourseOfferingEmbedding()
     

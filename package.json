@@ -9,6 +9,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsup src/server.ts --format esm",
     "test:openRouter": "tsx src/script/testOpenRouter.ts",
+    "index:course": "tsx src/script/indexCourse.ts",
     "biome:check": "npx @biomejs/biome format ./src",
     "biome:fix": "npx @biomejs/biome format --write ./src",
     "lint:check": "npx @biomejs/biome lint ./src",
