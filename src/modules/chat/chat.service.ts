@@ -130,6 +130,7 @@ const getCourseOfferingWithTeacherAndCourse = async (courseIds: string[]) => {
           
           department:{
             select:{
+              id:true,
               name:true,
               description:true
             }
@@ -161,6 +162,7 @@ const buildContext = (courses: TChatCourse[]) => {
 
     Course Title: ${course.course.title}
     Department: ${course.course.department.name}
+    DepartmentId: ${course.course.department.id}
     Department Description: ${course.course.department.description ?? 'N/A'}
 
     Course Description: ${course.course.description ?? 'N/A'}

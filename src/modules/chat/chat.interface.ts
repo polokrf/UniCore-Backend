@@ -37,6 +37,7 @@ export interface IChatCourse {
     title: string;
     description: string | null;
     department: {
+      id:string;
       name: string;
       description: string | null;
     };
